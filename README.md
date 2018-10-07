@@ -11,7 +11,7 @@ Sind Götter messbar? Wenn es draußen stürmt oder uns der Wind langsam durchs 
 
 **Angepasst**
 
-![tinia-architecture](./img/Tinia Struktur.png)
+![tinia-architecture](./img/Tinia%20Struktur.png)
 
 ### Hardware und Software
 
