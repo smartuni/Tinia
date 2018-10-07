@@ -30,3 +30,12 @@ Sind Götter messbar? Wenn es draußen stürmt oder uns der Wind langsam durchs 
 **Cayenne Cloud Server und Dashboard**
 
 ![cayenne-iot](https://mydevices.com/wp-content/themes/mydevices/dist/images/cayenne_on_phone.png)
+
+### Zuständigkeiten
+
+- Lukas (Sensorik/Board/LoRa-Verbindung)
+- Dennis (Sensorik/Board/LoRa-Verbindung)
+- Victor (Sensorik/Board/LoRa-Verbindung)
+- Marc (Server/Front-End)
+- Marlene (Server/Front-End)
+
