@@ -1,7 +1,7 @@
 # Tinia
 
 ### Inhalt des Projekts
-Sind Götter messbar? Wenn es draußen stürmt oder uns der Wind langsam durchs Haar streicht, dann hat nur einer die Finger im Spiel: Der Gott Tinia. Was er scheinbar zufällig geschehen lässt, mal launig, mal sanft, wollen wir in Zahlen fassen. Das RIOT-Projekt Tinia ist unsere Antwort auf eine geschlossene wissenschaftlich Lücke, die wir zu öffnen gedenken. Ein Annäherungsversuch an eine göttliche Macht, die schwer zu greifen ist. Wir messen diese Macht und werten sie graphisch aus. Dazu werden wir altmodische Instrumente zum Einsatz bringen, die die Welt so schon oft gesehen hat: Windmesser. Gemeinsam mit dem mächtigen Betriebssystem RIOT entsteht ein Experiment am Rande des Wahnsinns - im transzendenten Raum zwischen Himmel und Erde.
+Wenn es draußen stürmt oder uns der Wind langsam durchs Haar streicht, dann hat nur einer die Finger im Spiel: Der Gott Tinia. Was er scheinbar zufällig geschehen lässt, mal launig, mal sanft, wollen wir in Zahlen fassen. Wir fragen uns: Sind Götter messbar? Das RIOT-Projekt Tinia ist diw Antwort auf eine geschlossene wissenschaftlich Lücke, die wir wieder öffnen. Ein Annäherungsversuch an eine göttliche Macht, die schwer zu greifen ist. Wir messen diese Macht und werten sie graphisch aus. Dazu werden wir altmodische Instrumente zum Einsatz bringen, die die Welt so schon oft gesehen hat: Windmesser. Gemeinsam mit dem mächtigen Betriebssystem RIOT entsteht ein Experiment am Rande des Wahnsinns - im transzendenten Raum zwischen Himmel und Erde.
 
 ### Architektur
 
