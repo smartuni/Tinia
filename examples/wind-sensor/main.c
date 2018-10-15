@@ -70,18 +70,18 @@ int main(void)
 
     /* initialize wind output */
       if (adc_init(ADC_LINE(RV_PIN)) < 0) {
-          printf("Initialization of wind sensor pin failed\n", RV_PIN);
+          puts("Initialization of wind sensor pin failed\n");
           return 1;
       } else {
-          printf("Successfully initialized wind sensor pin\n", RV_PIN);
+          puts("Successfully initialized wind sensor pin\n");
       }
 
       /* initialize temp output */
       if (adc_init(ADC_LINE(TMP_PIN)) < 0) {
-          printf("Initialization of temp sensor pin failed\n", TMP_PIN);
+          puts("Initialization of temp sensor pin failed\n");
           return 1;
       } else {
-          printf("Successfully initialized temp sensor pin\n", TMP_PIN);
+          puts("Successfully initialized temp sensor pin\n");
       }
 
     while (1) {
