@@ -1,18 +1,14 @@
-LoRaWAN
-=======
+# LoRaWAN Cayenne Example
 
-Description
------------
+## Description
 
 This application shows a simple use case of LoRaWAN with RIOT.
 
-By using the real time clock and low-power capabilities of a board, this
-application shows how to program a LoRaWAN Class A device using RIOT.
+By using the real time clock and low-power capabilities of a board, this application shows how to program a LoRaWAN Class A device using RIOT.
 
 This application is using the Over-The-Air Activation procedure.
 
-Usage
------
+## Usage
 
 Simply build and flash the application for a ST B-L072Z-LRWAN1 board:
 
@@ -33,6 +29,8 @@ on the [the sx1272 radio](https://os.mbed.com/components/SX1272MB2xAS/).
 Finally, to join a LoRaWAN network using OTAA activation, edit the application
 `Makefile` and set your device information:
 
-    DEVEUI ?= 0000000000000000
-    APPEUI ?= 0000000000000000
-    APPKEY ?= 00000000000000000000000000000000
+```
+DEVEUI ?= 0000000000000000
+APPEUI ?= 0000000000000000
+APPKEY ?= 00000000000000000000000000000000
+```

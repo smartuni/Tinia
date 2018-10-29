@@ -25,7 +25,7 @@
 #define SENDER_PRIO         (THREAD_PRIORITY_MAIN - 1)
 #define RESOLUTION      ADC_RES_10BIT // mapping to 1024 bits resolution
 #define RV_PIN          1 // wind sensor output
-#define TMP_PIN         0 // temp sensort output
+#define TMP_PIN         2 // temp sensort output
 
 static kernel_pid_t sender_pid;
 static char sender_stack[THREAD_STACKSIZE_MAIN / 2];
