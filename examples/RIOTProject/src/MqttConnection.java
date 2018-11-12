@@ -1,4 +1,3 @@
-import org.eclipse.paho.client.mqttv3.MqttException;
 import org.thethingsnetwork.data.common.Connection;
 import org.thethingsnetwork.data.common.messages.ActivationMessage;
 import org.thethingsnetwork.data.common.messages.DataMessage;
@@ -16,20 +15,21 @@ public class MqttConnection {
 	private GUI gui2 = null;
 	
 
-	public MqttConnection(String region, String appId, String accessKey) throws MqttException, Exception {
+	public MqttConnection(String region, String appId, String accessKey, GUI gui) throws Exception {
 		this.region = region;
 		this.appId = appId;
 		this.accessKey = accessKey;
+		this.gui2 = gui;
 		//gui = new MonitorFrame();
 		createConnection();
 		// JavaFX Fenster
-		gui2 = new GUI();
-		gui2.run();
+		//gui2 = new GUI();
+		//gui2.run();
 
 
 	}
 
-	private void createConnection() throws MqttException, Exception {
+	private void createConnection() throws Exception {
 		System.out.println("CREATE");
 		client = new Client(region, appId, accessKey);
 		client.onError((Throwable _error) -> System.err.println("error: " + _error.getMessage() + _error.getLocalizedMessage() + _error.toString()));
