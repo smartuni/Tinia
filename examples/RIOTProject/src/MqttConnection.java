@@ -21,10 +21,11 @@ public class MqttConnection {
 		this.appId = appId;
 		this.accessKey = accessKey;
 		//gui = new MonitorFrame();
+		createConnection();
 		// JavaFX Fenster
 		gui2 = new GUI();
 		gui2.run();
-		createConnection();
+
 
 	}
 

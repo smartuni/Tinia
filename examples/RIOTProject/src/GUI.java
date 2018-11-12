@@ -2,8 +2,10 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -12,6 +14,7 @@ public class GUI extends Application {
 
     //Creating a Text object
     private Text text = new Text();
+
 
     //Creating a Group object
     private Group root = new Group();
@@ -29,6 +32,9 @@ public class GUI extends Application {
     public void start(Stage stage) {
 
         initText();
+
+
+
 
         //Retrieving the observable list object
         ObservableList list = root.getChildren();
@@ -63,18 +69,8 @@ public class GUI extends Application {
     }
 
     public void updateText(String message) {
-        //text.setText(message);
+        text.setText(message);
         System.out.println("Text updated to: " +  message);
-
-        text.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable,
-                                String text, String message) {
-
-                System.out.println(" Text Changed to  " + message + ")\n");
-            }
-        });
-
 
     }
 
