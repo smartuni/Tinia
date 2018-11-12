@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -61,8 +63,19 @@ public class GUI extends Application {
     }
 
     public void updateText(String message) {
-        text.setText(message);
+        //text.setText(message);
         System.out.println("Text updated to: " +  message);
+
+        text.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                                String text, String message) {
+
+                System.out.println(" Text Changed to  " + message + ")\n");
+            }
+        });
+
+
     }
 
 
