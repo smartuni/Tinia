@@ -13,13 +13,17 @@ public class MqttConnection {
 	
 	private Client client = null;
 	private MonitorFrame gui = null;
+	private GUI gui2 = null;
 	
 
 	public MqttConnection(String region, String appId, String accessKey) throws MqttException, Exception {
 		this.region = region;
 		this.appId = appId;
 		this.accessKey = accessKey;
-		gui = new MonitorFrame();
+		//gui = new MonitorFrame();
+		// JavaFX Fenster
+		gui2 = new GUI();
+		gui2.run();
 		createConnection();
 
 	}
@@ -41,7 +45,8 @@ public class MqttConnection {
 		System.out.println("Data:" + ((UplinkMessage) data).getPayloadFields());
 		Double wert = ((Double) uMe.getPayloadFields().get("analog_out_2"));
 		Long ganzZahlWert = Math.round(wert);
-		gui.updateSpeed(ganzZahlWert.intValue());
+		//gui.updateSpeed(ganzZahlWert.intValue());
+		gui2.updateText(ganzZahlWert.toString());
 		return new Object();
 	}
 }
