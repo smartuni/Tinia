@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
@@ -22,6 +23,8 @@ public class GUI extends Application {
     //Creating a scene object
     private Scene scene = new Scene(root, 600, 300);
 
+    private Label label;
+
     @Override
     public void init(){
 
@@ -30,17 +33,15 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage stage) {
-
+        label = new Label("Testlabel");
         initText();
-
-
-
 
         //Retrieving the observable list object
         ObservableList list = root.getChildren();
 
         //Setting the text object as a node to the group object
         list.add(text);
+        list.add(label);
 
         initStage(stage);
 
@@ -69,7 +70,8 @@ public class GUI extends Application {
     }
 
     public void updateText(String message) {
-        text.setText(message);
+       // label.setText(message);
+        label = new Label(message);
         System.out.println("Text updated to: " +  message);
 
     }
