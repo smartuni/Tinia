@@ -38,7 +38,10 @@ public class MqttConnection {
 	
 	private Object doSomethingWithMessage(String devId, DataMessage data) {
 		UplinkMessage uMe = (UplinkMessage) data;
-		gui.updateSpeed((Integer) uMe.getPayloadFields().get("analog_out_2"));
+		System.out.println("Data:" + ((UplinkMessage) data).getPayloadFields());
+		Double wert = ((Double) uMe.getPayloadFields().get("analog_out_2"));
+		Long ganzZahlWert = Math.round(wert);
+		gui.updateSpeed(ganzZahlWert.intValue());
 		return new Object();
 	}
 }
