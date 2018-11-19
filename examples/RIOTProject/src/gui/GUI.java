@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import mqtt.MqttConnection;
 
 public class GUI extends Application {
@@ -37,6 +38,8 @@ public class GUI extends Application {
         stage.setTitle("Tinia");
         stage.setScene(initScene.getScene());
         stage.setOnCloseRequest(event -> System.exit(0));
+        //stage.initStyle(StageStyle.TRANSPARENT);
+
         this.stage = stage;
 
         //Displaying the contents of the stage
