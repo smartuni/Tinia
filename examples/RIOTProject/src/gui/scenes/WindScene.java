@@ -1,9 +1,12 @@
 package gui.scenes;
 
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 
@@ -19,6 +22,7 @@ public class WindScene implements GUIScene {
     public WindScene() {
 
         BorderPane layout = new BorderPane();
+        layout.setPadding(new Insets(10, 20, 10, 20));
         this.scene = new Scene(layout, 640, 300);
         layout.setTop(initHeadline());
         layout.setCenter(initMessung());
@@ -27,6 +31,7 @@ public class WindScene implements GUIScene {
 
     private Node initMinMaxValue() {
         HBox valueLayout = new HBox();
+        valueLayout.setSpacing(10);
         valueLayout.getChildren().addAll(minText, maxText);
         return valueLayout;
     }
@@ -34,10 +39,12 @@ public class WindScene implements GUIScene {
     private Text initHeadline() {
         Text text = new Text();
         text.setText("Tinia - DER Windmesser");
+        text.setStyle("-fx-font-weight: bold");
         return text;
     }
 
     private Text initMessung() {
+        messungText.setFont(Font.font("Verdana", FontWeight.BLACK.BOLD, 70));
         return messungText;
     }
 
