@@ -1,3 +1,6 @@
+package mqtt;
+
+import gui.GUI;
 import org.thethingsnetwork.data.common.Connection;
 import org.thethingsnetwork.data.common.messages.ActivationMessage;
 import org.thethingsnetwork.data.common.messages.DataMessage;
@@ -11,7 +14,6 @@ public class MqttConnection {
 	private String accessKey;
 	
 	private Client client = null;
-	private MonitorFrame gui = null;
 	private GUI gui2 = null;
 	
 
@@ -23,7 +25,7 @@ public class MqttConnection {
 		//gui = new MonitorFrame();
 		createConnection();
 		// JavaFX Fenster
-		//gui2 = new GUI();
+		//gui2 = new gui.GUI();
 		//gui2.run();
 
 
