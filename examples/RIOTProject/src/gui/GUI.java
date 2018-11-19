@@ -45,6 +45,7 @@ public class GUI extends Application {
     public void updateText(String message) {
         Platform.runLater(() -> {
             if (stage.getScene() != windScene.getScene()) {
+                initScene.stopTimer();
                 stage.setScene(windScene.getScene());
             }
             windScene.updateText(message);

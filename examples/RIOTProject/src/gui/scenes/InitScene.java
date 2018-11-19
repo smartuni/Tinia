@@ -34,6 +34,10 @@ public class InitScene implements GUIScene {
         return text;
     }
 
+    public void stopTimer() {
+        timer.cancel();
+    }
+
     @Override
     public Scene getScene() {
         return this.scene;
