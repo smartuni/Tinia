@@ -49,10 +49,12 @@ public class MqttConnection {
 	private Object doSomethingWithMessage(String devId, DataMessage data) {
 		UplinkMessage uMe = (UplinkMessage) data;
 		System.out.println("Data:" + ((UplinkMessage) data).getPayloadFields());
-		Double wert = ((Double) uMe.getPayloadFields().get("analog_out_2"));
-		Long ganzZahlWert = Math.round(wert);
-		//gui.updateSpeed(ganzZahlWert.intValue());
-		gui2.updateText(ganzZahlWert.toString());
+        try {
+            MessageHandler.handleMessage(uMe,daten);
+            gui2.updateGui();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 		return new Object();
 	}
 }

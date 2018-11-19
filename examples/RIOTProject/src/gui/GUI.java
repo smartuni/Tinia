@@ -22,10 +22,12 @@ public class GUI extends Application {
     private InitScene initScene = new InitScene();
     private WindScene windScene = new WindScene();
 
+    private Daten daten = new Daten();
+
     @Override
     public void init() {
         try {
-            new MqttConnection("eu", "tini-riot-ws-1819", "ttn-account-v2.1eClE8ktJ5Js0gpZxIX1AifwEEnhDpPJ4ag24jyKdrE", this, new Daten());
+            new MqttConnection("eu", "tini-riot-ws-1819", "ttn-account-v2.1eClE8ktJ5Js0gpZxIX1AifwEEnhDpPJ4ag24jyKdrE", this, daten);
         } catch (Exception e) {
             System.err.println("Fehler in gui.GUI!");
             e.printStackTrace();
@@ -53,6 +55,15 @@ public class GUI extends Application {
                 stage.setScene(windScene.getScene());
             }
             windScene.updateText(message);
+        });
+    }
+
+    public void updateGui() {
+        Platform.runLater(() -> {
+            if (stage.getScene() != windScene.getScene()) {
+                stage.setScene(windScene.getScene());
+            }
+            windScene.updateText(daten.getWindGeschwindigkeiten().get(daten.getWindGeschwindigkeiten().size()-1).getGeschwindigkeit().toString());
         });
     }
 
