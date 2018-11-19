@@ -1,7 +1,7 @@
 package mqtt;
 
-import gui.daten.Daten;
-import gui.daten.Windgeschwindigkeit;
+import daten.Daten;
+import daten.Windgeschwindigkeit;
 import org.thethingsnetwork.data.common.messages.UplinkMessage;
 
 import java.util.Date;

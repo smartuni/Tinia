@@ -1,6 +1,6 @@
 package gui.scenes;
 
-import gui.daten.Windgeschwindigkeit;
+import daten.Windgeschwindigkeit;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;

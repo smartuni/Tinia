@@ -1,7 +1,7 @@
 package mqtt;
 
 import gui.GUI;
-import gui.daten.Daten;
+import daten.Daten;
 import org.thethingsnetwork.data.common.Connection;
 import org.thethingsnetwork.data.common.messages.ActivationMessage;
 import org.thethingsnetwork.data.common.messages.DataMessage;

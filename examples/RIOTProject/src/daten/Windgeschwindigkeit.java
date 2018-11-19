@@ -1,4 +1,4 @@
-package gui.daten;
+package daten;
 
 import java.util.Date;
 

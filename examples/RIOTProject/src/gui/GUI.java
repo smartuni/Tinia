@@ -1,18 +1,11 @@
 package gui;
 
-import gui.daten.Daten;
-import gui.scenes.GUIScene;
+import daten.Daten;
 import gui.scenes.InitScene;
 import gui.scenes.WindScene;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import mqtt.MqttConnection;
 
 public class GUI extends Application {

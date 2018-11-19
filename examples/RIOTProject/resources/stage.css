@@ -3,5 +3,11 @@
     -fx-background-repeat: stretch;
     -fx-background-size: 900 506;
     -fx-background-position: center center;
-    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+}
+
+#whiteTextBackground {
+    -fx-background-color: snow;
+    -fx-border-color: black;
+    -fx-border-radius: 5px;
+    -fx-border-style: solid;
 }
