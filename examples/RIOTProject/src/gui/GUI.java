@@ -1,5 +1,6 @@
 package gui;
 
+import gui.daten.Daten;
 import gui.scenes.GUIScene;
 import gui.scenes.InitScene;
 import gui.scenes.WindScene;
@@ -24,7 +25,7 @@ public class GUI extends Application {
     @Override
     public void init() {
         try {
-            new MqttConnection("eu", "tini-riot-ws-1819", "ttn-account-v2.1eClE8ktJ5Js0gpZxIX1AifwEEnhDpPJ4ag24jyKdrE", this);
+            new MqttConnection("eu", "tini-riot-ws-1819", "ttn-account-v2.1eClE8ktJ5Js0gpZxIX1AifwEEnhDpPJ4ag24jyKdrE", this, new Daten());
         } catch (Exception e) {
             System.err.println("Fehler in gui.GUI!");
             e.printStackTrace();

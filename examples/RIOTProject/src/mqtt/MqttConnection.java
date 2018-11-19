@@ -1,6 +1,7 @@
 package mqtt;
 
 import gui.GUI;
+import gui.daten.Daten;
 import org.thethingsnetwork.data.common.Connection;
 import org.thethingsnetwork.data.common.messages.ActivationMessage;
 import org.thethingsnetwork.data.common.messages.DataMessage;
@@ -15,13 +16,15 @@ public class MqttConnection {
 	
 	private Client client = null;
 	private GUI gui2 = null;
+	private Daten daten;
 	
 
-	public MqttConnection(String region, String appId, String accessKey, GUI gui) throws Exception {
+	public MqttConnection(String region, String appId, String accessKey, GUI gui, Daten daten) throws Exception {
 		this.region = region;
 		this.appId = appId;
 		this.accessKey = accessKey;
 		this.gui2 = gui;
+		this.daten = daten;
 		//gui = new MonitorFrame();
 		createConnection();
 		// JavaFX Fenster
