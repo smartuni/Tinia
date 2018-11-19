@@ -9,6 +9,7 @@ public class Start {
 			gui.run();
 		} catch (Exception e) {
 			System.err.println("Fehler!");
+			e.printStackTrace();
 		}
 	}
 }
