@@ -26,8 +26,7 @@ public class InitScene implements GUIScene {
 
     private Node initText() {
         Text text = new Text();
-        text.setFont(Font.font("Aclonica Font", FontWeight.BLACK.BOLD, 20));
-        text.setTextAlignment(TextAlignment.CENTER);
+        text.setId("windInitText");
         text.setText("Willkommen bei Tinia!\nWir warten noch kurz bis wir Daten empfangen");
         timer = new Timer(true);
         timer.schedule(new ShowLoading(text), 0, 1111);

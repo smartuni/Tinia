@@ -25,13 +25,7 @@ public class MqttConnection {
 		this.accessKey = accessKey;
 		this.gui2 = gui;
 		this.daten = daten;
-		//gui = new MonitorFrame();
 		createConnection();
-		// JavaFX Fenster
-		//gui2 = new gui.GUI();
-		//gui2.run();
-
-
 	}
 
 	private void createConnection() throws Exception {

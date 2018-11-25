@@ -1,9 +1,13 @@
 package gui.scenes;
 
+import daten.Daten;
 import daten.Windgeschwindigkeit;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -43,18 +47,21 @@ public class WindScene implements GUIScene {
 
     private Text initHeadline() {
         Text text = new Text();
+        text.setId("windTextHeadline");
         text.setText("Tinia - DER Windmesser");
-        text.setStyle("-fx-font-weight: bold");
+        //text.setStyle("-fx-font-weight: bold");
         return text;
     }
 
     private Text initMessung() {
+        messungText.setId("windMessungText");
         messungText.setFont(Font.font("Verdana", FontWeight.BLACK.BOLD, 70));
         return messungText;
     }
 
     private Text initText() {
         Text text = new Text();
+        text.setId("windText");
         text.setText("Willkommen bei Tinia. Bitte warte während wir die Daten empfangen...");
         return text;
     }
@@ -63,6 +70,7 @@ public class WindScene implements GUIScene {
     public Scene getScene() {
         return this.scene;
     }
+
 
     public void updateText(String message) {
         int wert = Integer.valueOf(message);

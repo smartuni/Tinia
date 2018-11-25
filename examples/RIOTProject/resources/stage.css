@@ -1,5 +1,8 @@
 #pane{
-    -fx-background-image: url("windrad.jpg");
+    -fx-background-image: url("regenschirme.jpg");
+   /* -fx-opacity: 0.5;*/
+    -fx-background-color: white;
+    -fx-background-blend-mode: screen;
     -fx-background-repeat: stretch;
     -fx-background-size: 900 506;
     -fx-background-position: center center;
@@ -10,4 +13,19 @@
     -fx-border-color: black;
     -fx-border-radius: 5px;
     -fx-border-style: solid;
+}
+
+#windInitText {
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+    -fx-font-family: Aclonica Font;
+    -fx-text-alignment: center;
+}
+
+#windTextHeadline {
+    -fx-font-weight: bold;
+}
+
+#windMessungText {
+
 }
