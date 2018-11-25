@@ -12,14 +12,21 @@ public class MessageHandler {
 
     public static void handleMessage(UplinkMessage message, Daten daten) throws Exception {
 
-       // String port = (String)message.getPayloadFields().get("port");
-        String port = "2";
-
-        switch(port) {
-            case "2":
+        int channel = getChannel(message);
+        switch(channel) {
+            case 2:
                 handleWindgeschwindigkeit(message, daten);
                 break;
             default: throw new Exception("Port unbekannt");
+        }
+    }
+
+    private static int getChannel(UplinkMessage message) {
+        byte[] raw = message.getPayloadRaw();
+        if (raw.length == 4) {
+            return message.getPayloadRaw()[0];
+        } else {
+            return -1;
         }
     }
 
