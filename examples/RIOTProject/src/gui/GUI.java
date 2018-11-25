@@ -3,6 +3,7 @@ package gui;
 import daten.Daten;
 import gui.scenes.InitScene;
 import gui.scenes.WindScene;
+import gui.scenes.WindSceneLineChart;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -12,10 +13,13 @@ public class GUI extends Application {
 
     private Stage stage;
 
+    private Daten daten = new Daten();
+
     private InitScene initScene = new InitScene();
     private WindScene windScene = new WindScene();
+    private WindSceneLineChart windLineChart = new WindSceneLineChart(daten);
 
-    private Daten daten = new Daten();
+
 
     @Override
     public void init() {
@@ -33,8 +37,9 @@ public class GUI extends Application {
     public void start(Stage stage) {
         stage.setTitle("Tinia");
         stage.setScene(initScene.getScene());
+        //stage.setScene(windLineChart.getScene());
         stage.setOnCloseRequest(event -> System.exit(0));
-        //stage.initStyle(StageStyle.TRANSPARENT);
+
 
         this.stage = stage;
 
@@ -58,12 +63,13 @@ public class GUI extends Application {
                 stage.setScene(windScene.getScene());
             }
             windScene.updateText(daten.getWindGeschwindigkeiten().get(daten.getWindGeschwindigkeiten().size()-1).getGeschwindigkeit().toString());
+            windLineChart.updateLineChart();
         });
     }
 
 
     public void run() {
-        launch();
+        Application.launch();
     }
 
 }
