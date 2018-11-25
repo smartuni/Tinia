@@ -1,8 +1,5 @@
 #pane{
     -fx-background-image: url("regenschirme.jpg");
-   /* -fx-opacity: 0.5;*/
-    -fx-background-color: white;
-    -fx-background-blend-mode: screen;
     -fx-background-repeat: stretch;
     -fx-background-size: 900 506;
     -fx-background-position: center center;
@@ -27,5 +24,8 @@
 }
 
 #windMessungText {
-
+    -fx-font-family: Verdana;
+    -fx-font-size: 70;
+    -fx-font-weight: bold;
+    -fx-text-color: black;
 }

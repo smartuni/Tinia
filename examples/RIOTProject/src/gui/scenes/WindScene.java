@@ -10,6 +10,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -19,6 +20,8 @@ import java.util.Date;
 
 public class WindScene implements GUIScene {
     private Scene scene;
+    private WindSceneLineChart lineChart;
+
     private Text messungText = new Text();
     private Text minText = new Text();
     private Text maxText = new Text();
@@ -26,8 +29,11 @@ public class WindScene implements GUIScene {
     private Windgeschwindigkeit minValue = null;
     private Windgeschwindigkeit maxValue = null;
 
-    public WindScene() {
+    private Daten daten;
 
+    public WindScene(Daten daten) {
+
+        this.daten = daten;
         BorderPane layout = new BorderPane();
         layout.setPadding(new Insets(10, 20, 10, 20));
         this.scene = new Scene(layout, 640, 300);
@@ -49,13 +55,11 @@ public class WindScene implements GUIScene {
         Text text = new Text();
         text.setId("windTextHeadline");
         text.setText("Tinia - DER Windmesser");
-        //text.setStyle("-fx-font-weight: bold");
         return text;
     }
 
     private Text initMessung() {
         messungText.setId("windMessungText");
-        messungText.setFont(Font.font("Verdana", FontWeight.BLACK.BOLD, 70));
         return messungText;
     }
 

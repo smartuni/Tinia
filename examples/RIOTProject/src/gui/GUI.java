@@ -16,7 +16,7 @@ public class GUI extends Application {
     private Daten daten = new Daten();
 
     private InitScene initScene = new InitScene();
-    private WindScene windScene = new WindScene();
+    private WindScene windScene = new WindScene(daten);
     private WindSceneLineChart windLineChart = new WindSceneLineChart(daten);
 
 
@@ -39,8 +39,6 @@ public class GUI extends Application {
         stage.setScene(initScene.getScene());
         //stage.setScene(windLineChart.getScene());
         stage.setOnCloseRequest(event -> System.exit(0));
-
-
         this.stage = stage;
 
         //Displaying the contents of the stage
