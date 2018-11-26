@@ -51,7 +51,7 @@ public class WindSceneLineChart implements GUIScene {
         // ForEach Schleife
         for( Windgeschwindigkeit k: daten.getWindGeschwindigkeiten() )
         {
-            series.getData().add(new XYChart.Data(k.getZeitpunkt().toString(), k.getGeschwindigkeit().intValue()));
+            series.getData().add(new XYChart.Data(k.getReadableTimestamp(), k.getGeschwindigkeit().intValue()));
         }
 
         this.scene  = new Scene(layout,640,300);
@@ -71,7 +71,7 @@ public class WindSceneLineChart implements GUIScene {
 
     public void updateLineChart() {
         Windgeschwindigkeit g = daten.getWindGeschwindigkeiten().get(daten.getWindGeschwindigkeiten().size()-1);
-        series.getData().add(new XYChart.Data(g.getZeitpunkt().toString(), g.getGeschwindigkeit().intValue()));
+        series.getData().add(new XYChart.Data(g.getReadableTimestamp(), g.getGeschwindigkeit().intValue()));
     }
 
     @Override
