@@ -2,12 +2,18 @@ package gui.scenes;
 
 import daten.Daten;
 import daten.Windgeschwindigkeit;
+import gui.GUI;
+import javafx.embed.swing.JFXPanel;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -22,6 +28,8 @@ public class WindScene implements GUIScene {
     private Scene scene;
     private WindSceneLineChart lineChart;
 
+    final JFXPanel fxPanel = new JFXPanel();
+
     private Text messungText = new Text();
     private Text minText = new Text();
     private Text maxText = new Text();
@@ -31,8 +39,10 @@ public class WindScene implements GUIScene {
 
     private Daten daten;
 
-    public WindScene(Daten daten) {
+    private GUI gui;
 
+    public WindScene(Daten daten, GUI gui) {
+        this.gui = gui;
         this.daten = daten;
         BorderPane layout = new BorderPane();
         layout.setPadding(new Insets(10, 20, 10, 20));
@@ -45,9 +55,19 @@ public class WindScene implements GUIScene {
     }
 
     private Node initMinMaxValue() {
+
+        Hyperlink chartLink = new Hyperlink("Zum Chart");
+        chartLink.setBorder(Border.EMPTY);
+        chartLink.setPadding(new Insets(4, 0, 4, 0));
+        chartLink.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                gui.getStage().setScene(new WindSceneLineChart(daten, gui).getScene());
+            }
+        });
         HBox valueLayout = new HBox();
         valueLayout.setSpacing(10);
-        valueLayout.getChildren().addAll(minText, maxText);
+        valueLayout.getChildren().addAll(minText, maxText, chartLink);
         return valueLayout;
     }
 
@@ -76,8 +96,8 @@ public class WindScene implements GUIScene {
     }
 
 
-    public void updateText(String message) {
-        int wert = Integer.valueOf(message);
+    public void updateText() {
+        int wert = daten.getWindGeschwindigkeiten().get(daten.getWindGeschwindigkeiten().size()-1).getGeschwindigkeit();
         if(maxValue == null || maxValue.getGeschwindigkeit() < wert) {
             maxValue = new Windgeschwindigkeit(wert, new Date());
             maxText.setText("Max: " + wert + " km/h");
@@ -86,6 +106,6 @@ public class WindScene implements GUIScene {
             minValue = new Windgeschwindigkeit(wert, new Date());
             minText.setText("Min: " + wert + " km/h");
         }
-        messungText.setText(message + " km/h");
+        messungText.setText(wert + " km/h");
     }
 }

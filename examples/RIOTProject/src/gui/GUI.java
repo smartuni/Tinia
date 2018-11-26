@@ -6,6 +6,7 @@ import gui.scenes.WindScene;
 import gui.scenes.WindSceneLineChart;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 import javafx.stage.Stage;
 import mqtt.MqttConnection;
 
@@ -16,10 +17,12 @@ public class GUI extends Application {
     private Daten daten = new Daten();
 
     private InitScene initScene = new InitScene();
-    private WindScene windScene = new WindScene(daten);
-    private WindSceneLineChart windLineChart = new WindSceneLineChart(daten);
+    private WindScene windScene = new WindScene(daten, this);
+    private WindSceneLineChart windLineChart = new WindSceneLineChart(daten, this);
 
-
+    public WindScene getWindScene() {
+        return this.windScene;
+    }
 
     @Override
     public void init() {
@@ -30,6 +33,10 @@ public class GUI extends Application {
             e.printStackTrace();
 
         }
+    }
+
+    public Stage getStage() {
+        return this.stage;
     }
 
 
@@ -45,22 +52,13 @@ public class GUI extends Application {
         stage.show();
     }
 
-    public void updateText(String message) {
-        Platform.runLater(() -> {
-            if (stage.getScene() != windScene.getScene()) {
-                initScene.stopTimer();
-                stage.setScene(windScene.getScene());
-            }
-            windScene.updateText(message);
-        });
-    }
-
     public void updateGui() {
+
         Platform.runLater(() -> {
-            if (stage.getScene() != windScene.getScene()) {
+            if (stage.getScene() == initScene.getScene()) {
                 stage.setScene(windScene.getScene());
             }
-            windScene.updateText(daten.getWindGeschwindigkeiten().get(daten.getWindGeschwindigkeiten().size()-1).getGeschwindigkeit().toString());
+            windScene.updateText();
             windLineChart.updateLineChart();
         });
     }
