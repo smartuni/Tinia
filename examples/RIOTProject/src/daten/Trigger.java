@@ -2,12 +2,12 @@ package daten;
 
 public class Trigger {
     private String name;
-    private String triggerType;
+    private TriggerType triggerType;
     private TriggerRange triggerRange = TriggerRange.TRIGGER_ABOVE; // ueber / unter
     private int value;
     private boolean active;
 
-    public Trigger(String name, String triggerType, boolean active, TriggerRange triggerRange, int value) {
+    public Trigger(String name, TriggerType triggerType, boolean active, TriggerRange triggerRange, int value) {
         this.name = name;
         this.triggerType = triggerType;
         this.active = active;
@@ -19,7 +19,7 @@ public class Trigger {
         this.name = name;
     }
 
-    public void setTriggerType(String triggerType) {
+    public void setTriggerType(TriggerType triggerType) {
         this.triggerType = triggerType;
     }
 
@@ -31,7 +31,7 @@ public class Trigger {
         return name;
     }
 
-    public String getTriggerType() {
+    public TriggerType getTriggerType() {
         return triggerType;
     }
 

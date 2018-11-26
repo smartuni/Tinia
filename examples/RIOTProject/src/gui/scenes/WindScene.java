@@ -110,12 +110,12 @@ public class WindScene implements GUIScene {
 
 
     public void updateText() {
-        int wert = daten.getWindGeschwindigkeiten().get(daten.getWindGeschwindigkeiten().size()-1).getGeschwindigkeit();
-        if(maxValue == null || maxValue.getGeschwindigkeit() < wert) {
+        int wert = daten.getWindGeschwindigkeiten().get(daten.getWindGeschwindigkeiten().size() - 1).getGeschwindigkeit();
+        if (maxValue == null || maxValue.getGeschwindigkeit() < wert) {
             maxValue = new Windgeschwindigkeit(wert, new Date());
             maxText.setText("Max: " + wert + " km/h");
         }
-        if(minValue == null || minValue.getGeschwindigkeit() > wert) {
+        if (minValue == null || minValue.getGeschwindigkeit() > wert) {
             minValue = new Windgeschwindigkeit(wert, new Date());
             minText.setText("Min: " + wert + " km/h");
         }
@@ -123,25 +123,28 @@ public class WindScene implements GUIScene {
 
         gui.getTriggerData().forEach((t) -> {
             Trigger trigger = (Trigger) t;
-            boolean triggered = false;
-            if(trigger.getTriggerRange() == TriggerRange.TRIGGER_ABOVE) {
-                if(wert > trigger.getValue()) {
-                    triggered = true;
+            if(trigger.isActive()) {
+                boolean triggered = false;
+                if (trigger.getTriggerRange() == TriggerRange.TRIGGER_ABOVE) {
+                    if (wert > trigger.getValue()) {
+                        triggered = true;
+                    }
+                } else {
+                    if (wert < trigger.getValue()) {
+                        triggered = true;
+                    }
                 }
-            } else {
-                if(wert < trigger.getValue()) {
-                    triggered = true;
+                if (triggered) {
+                    final Stage dialog = new Stage();
+                    dialog.setTitle(trigger.getName());
+                    dialog.initModality(Modality.APPLICATION_MODAL);
+                    dialog.initOwner(gui.getStage());
+                    VBox dialogVbox = new VBox(20);
+                    dialogVbox.getChildren().addAll(new Text("Wert ist " + trigger.getTriggerRange().getText() + " " + trigger.getValue() + "."), new Text("Trigger ausgelöst: " + new Date().toString()));
+                    Scene dialogScene = new Scene(dialogVbox, 300, 200);
+                    dialog.setScene(dialogScene);
+                    dialog.show();
                 }
-            }
-            if(triggered) {
-                final Stage dialog = new Stage();
-                dialog.initModality(Modality.APPLICATION_MODAL);
-                dialog.initOwner(gui.getStage());
-                VBox dialogVbox = new VBox(20);
-                dialogVbox.getChildren().add(new Text("TRIGGER: "+ trigger.getName()));
-                Scene dialogScene = new Scene(dialogVbox, 300, 200);
-                dialog.setScene(dialogScene);
-                dialog.show();
             }
         });
     }

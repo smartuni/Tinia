@@ -3,6 +3,7 @@ package gui;
 import daten.Daten;
 import daten.Trigger;
 import daten.TriggerRange;
+import daten.TriggerType;
 import gui.scenes.InitScene;
 import gui.scenes.TriggerScene;
 import gui.scenes.WindScene;
@@ -28,7 +29,7 @@ public class GUI extends Application {
 
     private final ObservableList<Trigger> data =
             FXCollections.observableArrayList(
-                    new Trigger("Warnung", "Meldung", true, TriggerRange.TRIGGER_ABOVE, 50)
+                    new Trigger("Warnung", TriggerType.MELDUNG, true, TriggerRange.TRIGGER_ABOVE, 50)
             );
 
     public WindScene getWindScene() {
