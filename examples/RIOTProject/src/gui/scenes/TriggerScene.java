@@ -91,26 +91,25 @@ public class TriggerScene implements GUIScene {
 
         TableColumn triggerCondition = new TableColumn("Bedingung");
         TableColumn triggerRange = new TableColumn("Über/Unter");
-        //triggerRange.setCellValueFactory(new PropertyValueFactory<Trigger, String>("triggerRangeReadable"));
 
-        triggerRange.setCellValueFactory((Callback<TableColumn.CellDataFeatures<Trigger, TriggerRange>, ObservableValue<TriggerRange>>) param -> {
+        triggerRange.setCellValueFactory((Callback<TableColumn.CellDataFeatures<Trigger, String>, ObservableValue<String>>) param -> {
             Trigger trigger = param.getValue();
-            TriggerRange gender = trigger.getTriggerRange();
+            String gender = trigger.getTriggerRange().getText();
             return new SimpleObjectProperty<>(gender);
         });
 
         ObservableList<TriggerRange> genderList = FXCollections.observableArrayList(//
-                TriggerRange.values());
+                TriggerRange.getClearedValues());
 
         triggerRange.setCellFactory(ComboBoxTableCell.forTableColumn(genderList));
 
 
-        triggerRange.setOnEditCommit(new EventHandler<CellEditEvent<Trigger, TriggerRange>>() {
+        triggerRange.setOnEditCommit(new EventHandler<CellEditEvent<Trigger, String>>() {
             @Override
-            public void handle(TableColumn.CellEditEvent<Trigger, TriggerRange> event) {
-                TablePosition<Trigger, TriggerRange> pos = event.getTablePosition();
+            public void handle(TableColumn.CellEditEvent<Trigger, String> event) {
+                TablePosition<Trigger, String> pos = event.getTablePosition();
 
-                TriggerRange newGender = event.getNewValue();
+                TriggerRange newGender = TriggerRange.getValue(event.getNewValue());
 
                 int row = pos.getRow();
                 Trigger person = event.getTableView().getItems().get(row);

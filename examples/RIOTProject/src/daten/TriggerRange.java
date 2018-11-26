@@ -1,5 +1,8 @@
 package daten;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum TriggerRange {
     TRIGGER_ABOVE("über"), TRIGGER_UNDER("unter");
 
@@ -11,5 +14,22 @@ public enum TriggerRange {
 
     public String getText() {
         return label;
+    }
+
+    public static List getClearedValues() {
+        List l = new ArrayList();
+        for (TriggerRange r: values()) {
+            l.add(r.getText());
+        }
+        return l;
+    }
+
+    public static TriggerRange getValue(String label) {
+        for (TriggerRange r: values()) {
+            if(r.getText().equals(label)) {
+                return r;
+            }
+        }
+        return null;
     }
 }
