@@ -46,7 +46,7 @@ public class WindSceneLineChart implements GUIScene {
         lineChart.setTitle("Windgeschwindigkeiten");
 
         //XYChart.Series series = new XYChart.Series();
-        series.setName("My portfolio");
+        series.setName("Geschwindigkeit in km/h");
 
         // ForEach Schleife
         for( Windgeschwindigkeit k: daten.getWindGeschwindigkeiten() )

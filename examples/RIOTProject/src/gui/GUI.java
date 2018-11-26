@@ -24,6 +24,10 @@ public class GUI extends Application {
         return this.windScene;
     }
 
+    public WindSceneLineChart getWindLineChart() {
+        return this.windLineChart;
+    }
+
     @Override
     public void init() {
         try {

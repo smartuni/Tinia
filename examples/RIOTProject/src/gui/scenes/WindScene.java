@@ -62,7 +62,7 @@ public class WindScene implements GUIScene {
         chartLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                gui.getStage().setScene(new WindSceneLineChart(daten, gui).getScene());
+                gui.getStage().setScene(gui.getWindLineChart().getScene());
             }
         });
         HBox valueLayout = new HBox();
