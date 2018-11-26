@@ -58,7 +58,7 @@ public class WindScene implements GUIScene {
 
         Hyperlink chartLink = new Hyperlink("Zum Chart");
         chartLink.setBorder(Border.EMPTY);
-        chartLink.setPadding(new Insets(4, 0, 4, 0));
+        chartLink.setPadding(new Insets(0, 0, 4, 0));
         chartLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {

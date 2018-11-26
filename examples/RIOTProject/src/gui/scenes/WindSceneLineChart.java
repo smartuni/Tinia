@@ -58,7 +58,7 @@ public class WindSceneLineChart implements GUIScene {
         lineChart.getData().add(series);
         Hyperlink linkMonitor = new Hyperlink("Zum Monitor");
         linkMonitor.setBorder(Border.EMPTY);
-        linkMonitor.setPadding(new Insets(4, 0, 4, 0));
+        linkMonitor.setPadding(new Insets(4, 0, 4, 4));
         linkMonitor.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
