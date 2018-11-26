@@ -1,6 +1,8 @@
 package gui.scenes;
 
 import daten.Daten;
+import daten.Trigger;
+import daten.TriggerRange;
 import daten.Windgeschwindigkeit;
 import gui.GUI;
 import javafx.embed.swing.JFXPanel;
@@ -13,13 +15,12 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.util.Date;
 
@@ -65,9 +66,21 @@ public class WindScene implements GUIScene {
                 gui.getStage().setScene(gui.getWindLineChart().getScene());
             }
         });
+
+
+        Hyperlink triggerLink = new Hyperlink("Trigger verwalten");
+        triggerLink.setBorder(Border.EMPTY);
+        triggerLink.setPadding(new Insets(0, 0, 4, 0));
+        triggerLink.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                gui.getStage().setScene(gui.getTriggerScene().getScene());
+            }
+        });
+
         HBox valueLayout = new HBox();
         valueLayout.setSpacing(10);
-        valueLayout.getChildren().addAll(minText, maxText, chartLink);
+        valueLayout.getChildren().addAll(minText, maxText, chartLink, triggerLink);
         return valueLayout;
     }
 
@@ -107,5 +120,29 @@ public class WindScene implements GUIScene {
             minText.setText("Min: " + wert + " km/h");
         }
         messungText.setText(wert + " km/h");
+
+        gui.getTriggerData().forEach((t) -> {
+            Trigger trigger = (Trigger) t;
+            boolean triggered = false;
+            if(trigger.getTriggerRange() == TriggerRange.TRIGGER_ABOVE) {
+                if(wert > trigger.getValue()) {
+                    triggered = true;
+                }
+            } else {
+                if(wert < trigger.getValue()) {
+                    triggered = true;
+                }
+            }
+            if(triggered) {
+                final Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                dialog.initOwner(gui.getStage());
+                VBox dialogVbox = new VBox(20);
+                dialogVbox.getChildren().add(new Text("TRIGGER: "+ trigger.getName()));
+                Scene dialogScene = new Scene(dialogVbox, 300, 200);
+                dialog.setScene(dialogScene);
+                dialog.show();
+            }
+        });
     }
 }

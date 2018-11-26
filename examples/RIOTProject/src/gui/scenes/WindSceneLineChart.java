@@ -56,6 +56,7 @@ public class WindSceneLineChart implements GUIScene {
 
         this.scene  = new Scene(layout,640,300);
         lineChart.getData().add(series);
+
         Hyperlink linkMonitor = new Hyperlink("Zum Monitor");
         linkMonitor.setBorder(Border.EMPTY);
         linkMonitor.setPadding(new Insets(4, 0, 4, 4));
@@ -65,6 +66,7 @@ public class WindSceneLineChart implements GUIScene {
                 gui.getStage().setScene(gui.getWindScene().getScene());
             }
         });
+
         layout.getChildren().addAll(lineChart, linkMonitor);
 
     }

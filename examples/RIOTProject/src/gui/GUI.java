@@ -1,11 +1,16 @@
 package gui;
 
 import daten.Daten;
+import daten.Trigger;
+import daten.TriggerRange;
 import gui.scenes.InitScene;
+import gui.scenes.TriggerScene;
 import gui.scenes.WindScene;
 import gui.scenes.WindSceneLineChart;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
 import javafx.stage.Stage;
 import mqtt.MqttConnection;
@@ -18,18 +23,33 @@ public class GUI extends Application {
 
     private InitScene initScene = new InitScene();
     private WindScene windScene = new WindScene(daten, this);
+    private TriggerScene triggerScene;
     private WindSceneLineChart windLineChart = new WindSceneLineChart(daten, this);
+
+    private final ObservableList<Trigger> data =
+            FXCollections.observableArrayList(
+                    new Trigger("Warnung", "Meldung", true, TriggerRange.TRIGGER_ABOVE, 50)
+            );
 
     public WindScene getWindScene() {
         return this.windScene;
+    }
+
+    public ObservableList getTriggerData() {
+        return data;
     }
 
     public WindSceneLineChart getWindLineChart() {
         return this.windLineChart;
     }
 
+    public TriggerScene getTriggerScene() {
+        return this.triggerScene;
+    }
+
     @Override
     public void init() {
+        triggerScene = new TriggerScene(this);
         try {
             new MqttConnection("eu", "tini-riot-ws-1819", "ttn-account-v2.1eClE8ktJ5Js0gpZxIX1AifwEEnhDpPJ4ag24jyKdrE", this, daten);
         } catch (Exception e) {
