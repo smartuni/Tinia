@@ -29,7 +29,7 @@ public class GUI extends Application {
 
     private final ObservableList<Trigger> data =
             FXCollections.observableArrayList(
-                    new Trigger("Warnung", TriggerType.MELDUNG, true, TriggerRange.TRIGGER_ABOVE, 50)
+                    new Trigger("Warnung", TriggerType.MELDUNG, false, TriggerRange.TRIGGER_ABOVE, 50)
             );
 
     public WindScene getWindScene() {

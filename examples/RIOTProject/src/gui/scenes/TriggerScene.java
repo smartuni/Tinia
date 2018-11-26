@@ -19,6 +19,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Border;
@@ -51,13 +52,41 @@ public class TriggerScene implements GUIScene {
 
     private Node triggerTable() {
         TableView table = new TableView();
+        table.setEditable(true);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         TableColumn triggerName = new TableColumn("Name");
         triggerName.setCellValueFactory(new PropertyValueFactory<Trigger, String>("name"));
+        triggerName.setCellFactory(TextFieldTableCell.<Trigger> forTableColumn());
+        triggerName.setOnEditCommit(
+                new EventHandler<CellEditEvent<Trigger, String>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<Trigger, String> t) {
+                        ((Trigger) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setName(t.getNewValue());
+                    }
+                }
+        );
         TableColumn triggerType = new TableColumn("Typ");
         triggerType.setCellValueFactory(new PropertyValueFactory<Trigger, String>("triggerType"));
-        TableColumn triggerActive = new TableColumn("Status");
+        TableColumn triggerActive = new TableColumn("Aktiviert");
         triggerActive.setCellValueFactory(new PropertyValueFactory<Trigger, Boolean>("active"));
+
+        triggerActive.setCellValueFactory((Callback<TableColumn.CellDataFeatures<Trigger, Boolean>, ObservableValue<Boolean>>) param -> {
+            Trigger trigger = param.getValue();
+
+            SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(trigger.isActive());
+            booleanProp.addListener((observable, oldValue, newValue) -> trigger.setActive(newValue));
+            return booleanProp;
+        });
+
+        //
+        triggerActive.setCellFactory((Callback<TableColumn<Trigger, Boolean>, TableCell<Trigger, Boolean>>) p -> {
+            CheckBoxTableCell<Trigger, Boolean> cell = new CheckBoxTableCell<>();
+            cell.setAlignment(Pos.CENTER);
+            return cell;
+        });
+
         TableColumn triggerCondition = new TableColumn("Bedingung");
         TableColumn triggerRange = new TableColumn("Über/Unter");
         triggerRange.setCellValueFactory(new PropertyValueFactory<Trigger, String>("triggerRangeReadable"));
