@@ -18,7 +18,7 @@ public class InitScene implements GUIScene {
 
     public InitScene() {
         BorderPane layout = new BorderPane();
-        this.scene = new Scene(layout, 640, 300);
+        this.scene = new Scene(layout, 800, 500);
         layout.setId("pane");
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
         layout.setCenter(initText());

@@ -11,12 +11,13 @@ Hiefür müssen die Daten pro Sensor wiefolgt strukturiert werden:
 - Im zweiten Byte steht der Typ
 - Im dritten und vierten Byte stehen die Messwerte
 
-Es können maximal 3 Sensorwerte in einem Payload verschickt werden
+Es können maximal 4 Sensorwerte in einem Payload verschickt werden
 
 **Channel**
-- 01 = Windgeschwindigkeit
-- 02 = Windrichtung
-- 03 = Niederschlag
+- 01 = Durchschnittliche Windgeschwindigkeit
+- 02 = Maximale Windgeschwindigkeit
+- 03 = Windrichtung
+- 04 = Niederschlag
 
 **Typ**
 
@@ -24,7 +25,7 @@ Der Typ muss analog_out (Wert = 03) sein.
 
 **Beispiel**
 
-Für das Senden von Windgeschwindigkeitsdaten:
+Für das Senden von durchschnittlichen Windgeschwindigkeitsdaten:
 
 ```
 01 03 02 00

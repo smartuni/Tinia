@@ -47,7 +47,7 @@ public class WindScene implements GUIScene {
         this.daten = daten;
         BorderPane layout = new BorderPane();
         layout.setPadding(new Insets(10, 20, 10, 20));
-        this.scene = new Scene(layout, 640, 300);
+        this.scene = new Scene(layout, 800, 500);
         layout.setId("pane");
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
         layout.setTop(initHeadline());

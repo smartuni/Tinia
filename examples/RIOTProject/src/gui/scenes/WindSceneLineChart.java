@@ -8,13 +8,17 @@ import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.Border;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 
@@ -54,7 +58,7 @@ public class WindSceneLineChart implements GUIScene {
             series.getData().add(new XYChart.Data(k.getReadableTimestamp(), k.getGeschwindigkeit().intValue()));
         }
 
-        this.scene  = new Scene(layout,640,300);
+        this.scene  = new Scene(layout,800,500);
         lineChart.getData().add(series);
 
         Hyperlink linkMonitor = new Hyperlink("Zum Monitor");
@@ -67,8 +71,22 @@ public class WindSceneLineChart implements GUIScene {
             }
         });
 
-        layout.getChildren().addAll(lineChart, linkMonitor);
+        layout.getChildren().addAll(buttonLeiste(), lineChart, linkMonitor);
 
+    }
+
+    private Node buttonLeiste() {
+
+        Button aktuell = new Button("Aktuell");
+        Button zehntage = new Button("letzte 10 Tage");
+        Button letzterMonat = new Button("Letzter Monat");
+
+
+        HBox valueLayout = new HBox();
+        valueLayout.setSpacing(10);
+        valueLayout.getChildren().addAll(aktuell,zehntage,letzterMonat);
+        valueLayout.setAlignment(Pos.TOP_CENTER);
+        return valueLayout;
     }
 
     public void updateLineChart() {

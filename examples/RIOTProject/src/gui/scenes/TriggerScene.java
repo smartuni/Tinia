@@ -44,7 +44,7 @@ public class TriggerScene implements GUIScene {
     public TriggerScene(GUI gui) {
         this.gui = gui;
         VBox layout = new VBox(10);
-        this.scene = new Scene(layout, 640, 300);
+        this.scene = new Scene(layout, 800, 500);
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
         layout.getChildren().addAll(headlineLabel(),addTrigger(),triggerTable(), footerLink());
 
