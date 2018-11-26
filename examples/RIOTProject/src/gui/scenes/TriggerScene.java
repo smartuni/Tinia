@@ -52,8 +52,14 @@ public class TriggerScene implements GUIScene {
         triggerType.setCellValueFactory(new PropertyValueFactory<Trigger, String>("triggerType"));
         TableColumn triggerActive = new TableColumn("Status");
         triggerActive.setCellValueFactory(new PropertyValueFactory<Trigger, String>("active"));
+        TableColumn triggerCondition = new TableColumn("Bedingung");
+        TableColumn triggerRange = new TableColumn("Über/Unter");
+        triggerRange.setCellValueFactory(new PropertyValueFactory<Trigger, String>("triggerRangeReadable"));
+        TableColumn triggerValue = new TableColumn("Wert");
+        triggerValue.setCellValueFactory(new PropertyValueFactory<Trigger, String>("value"));
+        triggerCondition.getColumns().addAll(triggerRange, triggerValue);
 
-        table.getColumns().addAll(triggerName, triggerType, triggerActive);
+        table.getColumns().addAll(triggerName, triggerType, triggerActive, triggerCondition);
         table.setItems(gui.getTriggerData());
         System.out.println(gui.getTriggerData());
         return table;

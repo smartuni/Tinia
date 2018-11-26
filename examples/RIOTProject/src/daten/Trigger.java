@@ -54,4 +54,8 @@ public class Trigger {
     public void setValue(int value) {
         this.value = value;
     }
+
+    public String getTriggerRangeReadable() {
+        return this.getTriggerRange().getText();
+    }
 }
