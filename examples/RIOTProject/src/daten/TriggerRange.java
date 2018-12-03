@@ -16,8 +16,8 @@ public enum TriggerRange {
         return label;
     }
 
-    public static List getClearedValues() {
-        List l = new ArrayList();
+    public static List<String> getClearedValues() {
+        List<String> l = new ArrayList();
         for (TriggerRange r: values()) {
             l.add(r.getText());
         }

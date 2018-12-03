@@ -1,42 +1,32 @@
 package gui.scenes;
 
-import daten.Daten;
 import daten.Trigger;
 import daten.TriggerRange;
-import daten.Windgeschwindigkeit;
 import gui.GUI;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.function.Predicate;
 
 
 public class TriggerScene implements GUIScene {
@@ -98,7 +88,7 @@ public class TriggerScene implements GUIScene {
             return new SimpleObjectProperty<>(gender);
         });
 
-        ObservableList<TriggerRange> genderList = FXCollections.observableArrayList(//
+        ObservableList<String> genderList = FXCollections.observableArrayList(//
                 TriggerRange.getClearedValues());
 
         triggerRange.setCellFactory(ComboBoxTableCell.forTableColumn(genderList));
@@ -143,6 +133,13 @@ public class TriggerScene implements GUIScene {
     private Node addTrigger() {
         HBox addTriggerBox = new HBox(10);
         Button newTriggerButton = new Button("+ Trigger anlegen");
+        EventHandler<ActionEvent> newTriggerHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                gui.getStage().setScene(new NewTriggerScene(gui).getScene());
+            }
+        };
+        newTriggerButton.setOnAction(newTriggerHandler);
         addTriggerBox.getChildren().add(newTriggerButton);
         addTriggerBox.setAlignment(Pos.BASELINE_RIGHT);
         return addTriggerBox;
