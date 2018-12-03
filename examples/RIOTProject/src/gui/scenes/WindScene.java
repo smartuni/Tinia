@@ -1,23 +1,19 @@
 package gui.scenes;
 
-import daten.Daten;
-import daten.Trigger;
-import daten.TriggerRange;
-import daten.Windgeschwindigkeit;
+import daten.*;
 import gui.GUI;
+import gui.dialogs.TriggerDialog;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -122,21 +118,15 @@ public class WindScene implements GUIScene {
                     if (wert > trigger.getValue()) {
                         triggered = true;
                     }
-                } else {
+                } else if(trigger.getTriggerRange() == TriggerRange.TRIGGER_UNDER) {
                     if (wert < trigger.getValue()) {
                         triggered = true;
                     }
                 }
                 if (triggered) {
-                    final Stage dialog = new Stage();
-                    dialog.setTitle(trigger.getName());
-                    dialog.initModality(Modality.APPLICATION_MODAL);
-                    dialog.initOwner(gui.getStage());
-                    VBox dialogVbox = new VBox(20);
-                    dialogVbox.getChildren().addAll(new Text("Wert ist " + trigger.getTriggerRange().getText() + " " + trigger.getValue() + "."), new Text("Trigger ausgelöst: " + new Date().toString()));
-                    Scene dialogScene = new Scene(dialogVbox, 300, 200);
-                    dialog.setScene(dialogScene);
-                    dialog.show();
+                    if(trigger.getTriggerType() == TriggerType.MELDUNG) {
+                        new TriggerDialog(trigger, gui, wert);
+                    }
                 }
             }
         });
