@@ -1,10 +1,7 @@
 package daten;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 public class Daten {
 
@@ -23,21 +20,24 @@ public class Daten {
         return windGeschwindigkeiten;
     }
 
+
     private void createDummyDaten() {
 
         Date currentDate = new Date();
 
-        // convert date to calendar
-        Calendar c = Calendar.getInstance();
-        c.setTime(currentDate);
+
 
         int i;
         for (i=0;i<10;i++) {
             // manipulate date
-            c.add(Calendar.YEAR, i);
-            c.add(Calendar.MONTH, i);
-            c.add(Calendar.DATE, i); //same with c.add(Calendar.DAY_OF_MONTH, 1);
-            c.add(Calendar.HOUR, i);
+            // convert date to calendar
+            Calendar c = Calendar.getInstance();
+            c.setTime(currentDate);
+
+            c.add(Calendar.YEAR, 0);
+            c.add(Calendar.MONTH, 0);
+            c.add(Calendar.DATE, 0); //same with c.add(Calendar.DAY_OF_MONTH, 1);
+            c.add(Calendar.HOUR, -1);
             c.add(Calendar.MINUTE, i);
             c.add(Calendar.SECOND, i);
 
@@ -45,6 +45,7 @@ public class Daten {
             Date currentDatePlusi = c.getTime();
 
             windGeschwindigkeiten.add(new Windgeschwindigkeit(5+i, currentDatePlusi  ));
+
         }
     }
 }

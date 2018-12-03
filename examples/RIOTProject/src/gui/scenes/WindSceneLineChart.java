@@ -21,16 +21,22 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.util.Calendar;
+
 
 public class WindSceneLineChart implements GUIScene {
     private Scene scene;
     private Daten daten;
+    private GUI gui;
+
+    private String anzeigeFlag = "aktuell";
+
     private XYChart.Series series = new XYChart.Series();
     // wichtig zur Initialisierung
     private final JFXPanel fxPanel = new JFXPanel();
     private final CategoryAxis xAxis = new CategoryAxis();
     private final NumberAxis yAxis = new NumberAxis();
-    private GUI gui;
+
 
 
     public WindSceneLineChart(Daten daten, GUI gui) {
@@ -78,9 +84,30 @@ public class WindSceneLineChart implements GUIScene {
     private Node buttonLeiste() {
 
         Button aktuell = new Button("Aktuell");
-        Button zehntage = new Button("letzte 10 Tage");
-        Button letzterMonat = new Button("Letzter Monat");
+        aktuell.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                anzeigeFlag = "aktuell";
+                updateLineChart();
+            }
+        });
 
+        Button zehntage = new Button("Letzte 10 Tage");
+        zehntage.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                anzeigeFlag = "zehntage";
+                updateLineChart();
+            }
+        });
+        Button letzterMonat = new Button("Letzter Monat");
+        letzterMonat.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                anzeigeFlag = "letztermonat";
+                updateLineChart();
+            }
+        });
 
         HBox valueLayout = new HBox();
         valueLayout.setSpacing(10);
@@ -92,6 +119,33 @@ public class WindSceneLineChart implements GUIScene {
     public void updateLineChart() {
         Windgeschwindigkeit g = daten.getWindGeschwindigkeiten().get(daten.getWindGeschwindigkeiten().size()-1);
         series.getData().add(new XYChart.Data(g.getReadableTimestamp(), g.getGeschwindigkeit().intValue()));
+    }
+
+    private void setSeriesToAktuelleDaten() {
+        series = new XYChart.Series();
+        for( Windgeschwindigkeit k: daten.getWindGeschwindigkeiten() )
+        {
+            series.getData().add(new XYChart.Data(k.getReadableTimestamp(), k.getGeschwindigkeit().intValue()));
+        }
+    }
+
+    private void setSeriesToLetzteZehnTageDaten() {
+        series = new XYChart.Series();
+        for( Windgeschwindigkeit k: daten.getWindGeschwindigkeiten() )
+        {
+            series.getData().add(new XYChart.Data(k.getReadableTimestamp(), k.getGeschwindigkeit().intValue()));
+        }
+    }
+
+    private void setSeriesToLetzterMonatDaten() {
+        series = new XYChart.Series();
+        for( Windgeschwindigkeit k: daten.getWindGeschwindigkeiten() )
+        {
+            Calendar windTime = Calendar.getInstance();
+            windTime.setTime(k.getZeitpunkt());
+            //if (windTime.get(Calendar.DAY_OF_MONTH) == Calendar.)
+            series.getData().add(new XYChart.Data(k.getReadableTimestamp(), k.getGeschwindigkeit().intValue()));
+        }
     }
 
     @Override
