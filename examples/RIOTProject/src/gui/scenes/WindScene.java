@@ -96,13 +96,6 @@ public class WindScene implements GUIScene {
         return messungText;
     }
 
-    private Text initText() {
-        Text text = new Text();
-        text.setId("windText");
-        text.setText("Willkommen bei Tinia. Bitte warte während wir die Daten empfangen...");
-        return text;
-    }
-
     @Override
     public Scene getScene() {
         return this.scene;
