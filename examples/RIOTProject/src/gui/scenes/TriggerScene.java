@@ -3,6 +3,7 @@ package gui.scenes;
 import daten.Trigger;
 import daten.TriggerRange;
 import gui.GUI;
+import gui.GUIUtils;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -41,7 +42,7 @@ public class TriggerScene implements GUIScene {
         VBox layout = new VBox(10);
         this.scene = new Scene(layout, 800, 500);
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
-        layout.getChildren().addAll(headlineLabel(), addTrigger(), triggerTable(), footerLink());
+        layout.getChildren().addAll(GUIUtils.createFancyHeadline("Trigger verwalten"), addTrigger(), triggerTable(), footerLink());
 
     }
 
@@ -143,12 +144,6 @@ public class TriggerScene implements GUIScene {
         addTriggerBox.getChildren().add(newTriggerButton);
         addTriggerBox.setAlignment(Pos.BASELINE_RIGHT);
         return addTriggerBox;
-    }
-
-    private Node headlineLabel() {
-        Text text = new Text("Trigger verwalten");
-        text.setId("windTextHeadline");
-        return text;
     }
 
     private Node footerLink() {

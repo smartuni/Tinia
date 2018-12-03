@@ -4,29 +4,23 @@ import daten.Trigger;
 import daten.TriggerRange;
 import daten.TriggerType;
 import gui.GUI;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import gui.GUIUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.cell.CheckBoxTableCell;
-import javafx.scene.control.cell.ComboBoxTableCell;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
-import javafx.util.converter.IntegerStringConverter;
 
 
 public class NewTriggerScene implements GUIScene {
@@ -41,14 +35,8 @@ public class NewTriggerScene implements GUIScene {
         VBox layout = new VBox(10);
         this.scene = new Scene(layout, 800, 500);
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
-        layout.getChildren().addAll(headlineLabel(), addTriggerForm());
+        layout.getChildren().addAll(GUIUtils.createFancyHeadline("Neuen Trigger anlegen"), addTriggerForm());
 
-    }
-
-    private Node headlineLabel() {
-        Text text = new Text("Neuen Trigger anlegen");
-        text.setId("windTextHeadline");
-        return text;
     }
 
     private Node addTriggerForm() {
