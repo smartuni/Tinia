@@ -25,9 +25,10 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
+
+import java.util.Optional;
 
 
 public class TriggerScene implements GUIScene {
@@ -40,6 +41,7 @@ public class TriggerScene implements GUIScene {
     public TriggerScene(GUI gui) {
         this.gui = gui;
         VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10, 10, 10, 10));
         this.scene = new Scene(layout, 800, 500);
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
         layout.getChildren().addAll(GUIUtils.createFancyHeadline("Trigger verwalten"), addTrigger(), triggerTable(), footerLink());
@@ -63,6 +65,8 @@ public class TriggerScene implements GUIScene {
                     }
                 }
         );
+        TableColumn triggerDataType = new TableColumn("Daten-Typ");
+        triggerDataType.setCellValueFactory(new PropertyValueFactory<Trigger, String>("triggerDataType"));
         TableColumn triggerType = new TableColumn("Typ");
         triggerType.setCellValueFactory(new PropertyValueFactory<Trigger, String>("triggerType"));
         TableColumn triggerActive = new TableColumn("Aktiviert");
@@ -144,8 +148,16 @@ public class TriggerScene implements GUIScene {
                                     setText(null);
                                 } else {
                                     btn.setOnAction(event -> {
-                                        Trigger triggerObject = getTableView().getItems().get(getIndex());
-                                        gui.getTriggerData().remove(triggerObject);
+                                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                        alert.setTitle("Bestätigen");
+                                        alert.setHeaderText("Wirklich löschen?");
+                                        alert.setContentText("Soll der Trigger wirklich gelöscht werden?");
+
+                                        Optional<ButtonType> result = alert.showAndWait();
+                                        if (result.get() == ButtonType.OK) {
+                                            Trigger triggerObject = getTableView().getItems().get(getIndex());
+                                            gui.getTriggerData().remove(triggerObject);
+                                        }
                                     });
                                     setGraphic(btn);
                                     setText(null);
@@ -159,7 +171,7 @@ public class TriggerScene implements GUIScene {
         actionCol.setCellFactory(cellFactory);
 
 
-        table.getColumns().addAll(triggerName, triggerType, triggerActive, triggerCondition, actionCol);
+        table.getColumns().addAll(triggerName, triggerDataType, triggerType, triggerActive, triggerCondition, actionCol);
         table.setItems(gui.getTriggerData());
         System.out.println(gui.getTriggerData());
         return table;

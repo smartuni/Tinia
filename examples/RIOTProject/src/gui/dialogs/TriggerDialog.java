@@ -14,6 +14,7 @@ import java.util.Date;
 public class TriggerDialog {
     public TriggerDialog(Trigger trigger, GUI gui, int wert) {
         final Stage dialog = new Stage();
+        dialog.setResizable(false);
         dialog.setTitle(trigger.getName());
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(gui.getStage());

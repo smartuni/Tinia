@@ -4,14 +4,16 @@ public class Trigger {
     private String name;
     private TriggerType triggerType;
     private TriggerRange triggerRange = TriggerRange.TRIGGER_ABOVE; // ueber / unter
+    private TriggerDataType triggerDataType;
     private int value;
     private boolean active;
 
-    public Trigger(String name, TriggerType triggerType, boolean active, TriggerRange triggerRange, int value) {
+    public Trigger(String name, TriggerType triggerType, boolean active, TriggerRange triggerRange, TriggerDataType triggerDataType, int value) {
         this.name = name;
         this.triggerType = triggerType;
         this.active = active;
         this.triggerRange = triggerRange;
+        this.triggerDataType = triggerDataType;
         this.value = value;
     }
 
@@ -58,4 +60,13 @@ public class Trigger {
     public String getTriggerRangeReadable() {
         return this.getTriggerRange().getText();
     }
+
+    public TriggerDataType getTriggerDataType() {
+        return triggerDataType;
+    }
+
+    public void setTriggerDataType(TriggerDataType triggerDataType) {
+        this.triggerDataType = triggerDataType;
+    }
+
 }

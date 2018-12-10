@@ -1,6 +1,7 @@
 package gui.scenes;
 
 import daten.Trigger;
+import daten.TriggerDataType;
 import daten.TriggerRange;
 import daten.TriggerType;
 import gui.GUI;
@@ -17,10 +18,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 
@@ -34,6 +33,7 @@ public class NewTriggerScene implements GUIScene {
     public NewTriggerScene(GUI gui) {
         this.gui = gui;
         VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10, 10, 10, 10));
         this.scene = new Scene(layout, 800, 500);
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
         layout.getChildren().addAll(GUIUtils.createFancyHeadline("Neuen Trigger anlegen"), addTriggerForm());
@@ -42,7 +42,7 @@ public class NewTriggerScene implements GUIScene {
 
     private Node addTriggerForm() {
         GridPane layout = new GridPane();
-
+        layout.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(30);
         ColumnConstraints col2 = new ColumnConstraints();
@@ -75,6 +75,9 @@ public class NewTriggerScene implements GUIScene {
         ComboBox<TriggerType> triggerTypesComboBox = new ComboBox<>();
         triggerTypesComboBox.getItems().setAll(TriggerType.values());
 
+        ComboBox<TriggerDataType> triggerDataTypeComboBox = new ComboBox<>();
+        triggerDataTypeComboBox.getItems().setAll(TriggerDataType.values());
+
         TextField triggerNameTextField = new TextField();
         Button createTriggerButton = new Button("Trigger anlegen");
         Button cancelButton = new Button("Abbrechen");
@@ -82,23 +85,25 @@ public class NewTriggerScene implements GUIScene {
 
         layout.add(new Text("Name: "), 0, 0);
         layout.add(triggerNameTextField, 1, 0);
-        layout.add(new Text("Art des Triggers:"), 0, 1);
-        layout.add(triggerTypesComboBox, 1, 1);
-        layout.add(new Text("Trigger auslösen bei"), 0, 2);
-        layout.add(triggerRangeLayout, 1, 2);
-        layout.add(buttonLayout, 1, 3);
+        layout.add(new Text("Trigger für Datentyp: "), 0, 1);
+        layout.add(triggerDataTypeComboBox, 1, 1);
+        layout.add(new Text("Art des Triggers:"), 0, 2);
+        layout.add(triggerTypesComboBox, 1, 2);
+        layout.add(new Text("Trigger auslösen bei"), 0, 3);
+        layout.add(triggerRangeLayout, 1, 3);
+        layout.add(buttonLayout, 1, 4);
 
         EventHandler<ActionEvent> createriggerHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (triggerNameTextField.getText().trim().equals("") || triggerRangerNumber.getText().trim().equals("") || triggerTypesComboBox.getValue() == null || triggerRangeComboBox.getValue() == null) {
+                if (triggerNameTextField.getText().trim().equals("") || triggerRangerNumber.getText().trim().equals("") || triggerTypesComboBox.getValue() == null || triggerRangeComboBox.getValue() == null || triggerDataTypeComboBox.getValue() == null) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Validierungsfehler");
                     alert.setHeaderText("Felder nicht vollständig");
                     alert.setContentText("Bitte alle Felder ausfüllen.");
                     alert.showAndWait();
                 } else {
-                    gui.getTriggerData().add(new Trigger(triggerNameTextField.getText(), triggerTypesComboBox.getValue(), true, TriggerRange.getValue(triggerRangeComboBox.getValue()), Integer.valueOf(triggerRangerNumber.getText())));
+                    gui.getTriggerData().add(new Trigger(triggerNameTextField.getText(), triggerTypesComboBox.getValue(), true, TriggerRange.getValue(triggerRangeComboBox.getValue()), triggerDataTypeComboBox.getValue(), Integer.valueOf(triggerRangerNumber.getText())));
                     gui.getStage().setScene(gui.getTriggerScene().getScene());
                 }
             }

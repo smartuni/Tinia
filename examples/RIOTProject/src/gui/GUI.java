@@ -1,9 +1,6 @@
 package gui;
 
-import daten.Daten;
-import daten.Trigger;
-import daten.TriggerRange;
-import daten.TriggerType;
+import daten.*;
 import gui.scenes.*;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -26,7 +23,7 @@ public class GUI extends Application {
 
     private final ObservableList<Trigger> data =
             FXCollections.observableArrayList(
-                    new Trigger("Warnung", TriggerType.MELDUNG, false, TriggerRange.TRIGGER_ABOVE, 50)
+                    new Trigger("Warnung", TriggerType.MELDUNG, false, TriggerRange.TRIGGER_ABOVE, TriggerDataType.WINDGESCHWINDIGKEIT, 50)
             );
 
     public WindScene getWindScene() {
