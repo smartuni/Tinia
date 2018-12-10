@@ -11,13 +11,16 @@ public class Trigger {
     private int value;
     private boolean active;
 
-    public Trigger(String name, TriggerType triggerType, boolean active, TriggerRange triggerRange, TriggerDataType triggerDataType, int value) {
+    private String extraTypeValue;
+
+    public Trigger(String name, TriggerType triggerType, String extraTypeValue, boolean active, TriggerRange triggerRange, TriggerDataType triggerDataType, int value) {
         this.name = name;
         this.triggerType = triggerType;
         this.active = active;
         this.triggerRange = triggerRange;
         this.triggerDataType = triggerDataType;
         this.value = value;
+        this.extraTypeValue = extraTypeValue;
     }
 
     public void setName(String name) {
@@ -70,6 +73,14 @@ public class Trigger {
 
     public void setTriggerDataType(TriggerDataType triggerDataType) {
         this.triggerDataType = triggerDataType;
+    }
+
+    public String getExtraTypeValue() {
+        return extraTypeValue;
+    }
+
+    public void setExtraTypeValue(String extraTypeValue) {
+        this.extraTypeValue = extraTypeValue;
     }
 
 }

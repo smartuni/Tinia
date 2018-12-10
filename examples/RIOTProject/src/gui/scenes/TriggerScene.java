@@ -68,7 +68,11 @@ public class TriggerScene implements GUIScene {
         TableColumn triggerDataType = new TableColumn("Daten-Typ");
         triggerDataType.setCellValueFactory(new PropertyValueFactory<Trigger, String>("triggerDataType"));
         TableColumn triggerType = new TableColumn("Typ");
-        triggerType.setCellValueFactory(new PropertyValueFactory<Trigger, String>("triggerType"));
+        TableColumn triggerTypeType = new TableColumn("Typ");
+        triggerTypeType.setCellValueFactory(new PropertyValueFactory<Trigger, String>("triggerType"));
+        TableColumn triggerTypeExtra = new TableColumn("Zusatz");
+        triggerTypeExtra.setCellValueFactory(new PropertyValueFactory<Trigger, String>("extraTypeValue"));
+        triggerType.getColumns().addAll(triggerTypeType, triggerTypeExtra);
         TableColumn triggerActive = new TableColumn("Aktiviert");
         triggerActive.setCellValueFactory((Callback<TableColumn.CellDataFeatures<Trigger, Boolean>, ObservableValue<Boolean>>) param -> {
             Trigger trigger = param.getValue();
@@ -171,7 +175,7 @@ public class TriggerScene implements GUIScene {
         actionCol.setCellFactory(cellFactory);
 
 
-        table.getColumns().addAll(triggerName, triggerDataType, triggerType, triggerActive, triggerCondition, actionCol);
+        table.getColumns().addAll(triggerActive, triggerName, triggerDataType, triggerType, triggerCondition, actionCol);
         table.setItems(gui.getTriggerData());
         System.out.println(gui.getTriggerData());
         return table;

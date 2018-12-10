@@ -14,10 +14,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -36,8 +33,14 @@ public class NewTriggerScene implements GUIScene {
         layout.setPadding(new Insets(10, 10, 10, 10));
         this.scene = new Scene(layout, 800, 500);
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
-        layout.getChildren().addAll(GUIUtils.createFancyHeadline("Neuen Trigger anlegen"), addTriggerForm());
+        layout.getChildren().addAll(GUIUtils.createFancyHeadline("Neuen Trigger anlegen"), infoText(), addTriggerForm());
 
+    }
+
+    private Label infoText() {
+        Label label = new Label("Das folgende Formular liefert die Möglichkeit, einen neuen Trigger für Tinia zu definieren. Trigger ermöglichen es, bei einer bestimmten Bedingung ein Event zu werfen. Im folgenden müssen alle Felder als Pflichtfelder betrachtet werden.");
+        label.setWrapText(true);
+        return label;
     }
 
     private Node addTriggerForm() {
@@ -73,6 +76,11 @@ public class NewTriggerScene implements GUIScene {
 
         HBox triggerTypeLayout = new HBox(10);
 
+        Text triggerExtraText = new Text();
+        TextField triggerExtraTextfield = new TextField();
+        triggerExtraText.setVisible(false);
+        triggerExtraTextfield.setVisible(false);
+
         ComboBox<TriggerType> triggerTypesComboBox = new ComboBox<>();
         triggerTypesComboBox.getItems().setAll(TriggerType.values());
 
@@ -83,6 +91,18 @@ public class NewTriggerScene implements GUIScene {
             @Override
             public void changed(ObservableValue<? extends TriggerType> observable, TriggerType oldValue, TriggerType newValue) {
                 triggerTypeDescrptionText.setText(newValue.getText());
+                if (newValue == TriggerType.RUECKGABE) {
+                    triggerExtraText.setText("Rückgabe-Wert: ");
+                    triggerExtraText.setVisible(true);
+                    triggerExtraTextfield.setVisible(true);
+                } else if (newValue == TriggerType.EMAIL) {
+                    triggerExtraText.setText("Senden an: ");
+                    triggerExtraText.setVisible(true);
+                    triggerExtraTextfield.setVisible(true);
+                } else {
+                    triggerExtraText.setVisible(false);
+                    triggerExtraTextfield.setVisible(false);
+                }
             }
         });
 
@@ -105,6 +125,9 @@ public class NewTriggerScene implements GUIScene {
         layout.add(new Text("Art des Triggers:"), 0, rowCounter);
         layout.add(triggerTypeLayout, 1, rowCounter);
         rowCounter++;
+        layout.add(triggerExtraText, 0, rowCounter);
+        layout.add(triggerExtraTextfield, 1, rowCounter);
+        rowCounter++;
         layout.add(new Text("Trigger auslösen bei"), 0, rowCounter);
         layout.add(triggerRangeLayout, 1, rowCounter);
         rowCounter++;
@@ -113,14 +136,14 @@ public class NewTriggerScene implements GUIScene {
         EventHandler<ActionEvent> createriggerHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (triggerNameTextField.getText().trim().equals("") || triggerRangerNumber.getText().trim().equals("") || triggerTypesComboBox.getValue() == null || triggerRangeComboBox.getValue() == null || triggerDataTypeComboBox.getValue() == null) {
+                if (triggerNameTextField.getText().trim().equals("") || triggerRangerNumber.getText().trim().equals("") || triggerTypesComboBox.getValue() == null || triggerRangeComboBox.getValue() == null || triggerDataTypeComboBox.getValue() == null || (triggerTypesComboBox.getValue() == TriggerType.RUECKGABE && triggerExtraTextfield.getText().trim().equals("")) || (triggerTypesComboBox.getValue() == TriggerType.EMAIL && triggerExtraTextfield.getText().trim().equals(""))) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Validierungsfehler");
                     alert.setHeaderText("Felder nicht vollständig");
                     alert.setContentText("Bitte alle Felder ausfüllen.");
                     alert.showAndWait();
                 } else {
-                    gui.getTriggerData().add(new Trigger(triggerNameTextField.getText(), triggerTypesComboBox.getValue(), true, TriggerRange.getValue(triggerRangeComboBox.getValue()), triggerDataTypeComboBox.getValue(), Integer.valueOf(triggerRangerNumber.getText())));
+                    gui.getTriggerData().add(new Trigger(triggerNameTextField.getText(), triggerTypesComboBox.getValue(), triggerExtraTextfield.getText(), true, TriggerRange.getValue(triggerRangeComboBox.getValue()), triggerDataTypeComboBox.getValue(), Integer.valueOf(triggerRangerNumber.getText())));
                     gui.getStage().setScene(gui.getTriggerScene().getScene());
                 }
             }

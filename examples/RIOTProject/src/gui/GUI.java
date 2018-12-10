@@ -1,12 +1,14 @@
 package gui;
 
 import daten.*;
-import gui.scenes.*;
+import gui.scenes.InitScene;
+import gui.scenes.TriggerScene;
+import gui.scenes.WindScene;
+import gui.scenes.WindSceneLineChart;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.JFXPanel;
 import javafx.stage.Stage;
 import mqtt.MqttConnection;
 
@@ -23,7 +25,7 @@ public class GUI extends Application {
 
     private final ObservableList<Trigger> data =
             FXCollections.observableArrayList(
-                    new Trigger("Warnung", TriggerType.MELDUNG, false, TriggerRange.TRIGGER_ABOVE, TriggerDataType.WINDGESCHWINDIGKEIT, 50)
+                    new Trigger("Warnung", TriggerType.MELDUNG, "", false, TriggerRange.TRIGGER_ABOVE, TriggerDataType.WINDGESCHWINDIGKEIT, 50)
             );
 
     public WindScene getWindScene() {
