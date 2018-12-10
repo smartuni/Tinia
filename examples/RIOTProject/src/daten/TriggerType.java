@@ -3,6 +3,9 @@ package daten;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gibt die Art des Triggers an. Genauer: Was soll passieren wenn der Trigger ausgelöst wird.
+ */
 public enum TriggerType {
     MELDUNG("Popup-Meldung"), EMAIL("Versand einer E-Mail"), RUECKGABE("Downlink zum Endgerät");
 
@@ -18,15 +21,15 @@ public enum TriggerType {
 
     public static List<String> getClearedValues() {
         List<String> l = new ArrayList();
-        for (TriggerType r: values()) {
+        for (TriggerType r : values()) {
             l.add(r.getText());
         }
         return l;
     }
 
     public static TriggerType getValue(String label) {
-        for (TriggerType r: values()) {
-            if(r.getText().equals(label)) {
+        for (TriggerType r : values()) {
+            if (r.getText().equals(label)) {
                 return r;
             }
         }

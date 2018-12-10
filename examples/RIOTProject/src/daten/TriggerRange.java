@@ -3,6 +3,9 @@ package daten;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Liefert für die Bedingung des Triggers die Möglichkeiten, soll ein Wert bspw. höher oder niedriger als X sein
+ */
 public enum TriggerRange {
     TRIGGER_ABOVE("über"), TRIGGER_UNDER("unter");
 

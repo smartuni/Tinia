@@ -1,5 +1,8 @@
 package daten;
 
+/**
+ * Trigger, der ein Event auslöst wenn eine bestimmte Bedingung erfüllt ist
+ */
 public class Trigger {
     private String name;
     private TriggerType triggerType;
