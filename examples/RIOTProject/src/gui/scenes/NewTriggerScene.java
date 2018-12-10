@@ -71,9 +71,20 @@ public class NewTriggerScene implements GUIScene {
         });
         triggerRangeLayout.getChildren().addAll(triggerRangeComboBox, triggerRangerNumber);
 
+        HBox triggerTypeLayout = new HBox(10);
 
         ComboBox<TriggerType> triggerTypesComboBox = new ComboBox<>();
         triggerTypesComboBox.getItems().setAll(TriggerType.values());
+
+        Text triggerTypeDescrptionText = new Text();
+        triggerTypeLayout.getChildren().addAll(triggerTypesComboBox, triggerTypeDescrptionText);
+
+        triggerTypesComboBox.valueProperty().addListener(new ChangeListener<TriggerType>() {
+            @Override
+            public void changed(ObservableValue<? extends TriggerType> observable, TriggerType oldValue, TriggerType newValue) {
+                triggerTypeDescrptionText.setText(newValue.getText());
+            }
+        });
 
         ComboBox<TriggerDataType> triggerDataTypeComboBox = new ComboBox<>();
         triggerDataTypeComboBox.getItems().setAll(TriggerDataType.values());
@@ -83,15 +94,21 @@ public class NewTriggerScene implements GUIScene {
         Button cancelButton = new Button("Abbrechen");
         buttonLayout.getChildren().addAll(createTriggerButton, cancelButton);
 
-        layout.add(new Text("Name: "), 0, 0);
-        layout.add(triggerNameTextField, 1, 0);
-        layout.add(new Text("Trigger für Datentyp: "), 0, 1);
-        layout.add(triggerDataTypeComboBox, 1, 1);
-        layout.add(new Text("Art des Triggers:"), 0, 2);
-        layout.add(triggerTypesComboBox, 1, 2);
-        layout.add(new Text("Trigger auslösen bei"), 0, 3);
-        layout.add(triggerRangeLayout, 1, 3);
-        layout.add(buttonLayout, 1, 4);
+        int rowCounter = 0;
+
+        layout.add(new Text("Name: "), 0, rowCounter);
+        layout.add(triggerNameTextField, 1, rowCounter);
+        rowCounter++;
+        layout.add(new Text("Trigger für Datentyp: "), 0, rowCounter);
+        layout.add(triggerDataTypeComboBox, 1, rowCounter);
+        rowCounter++;
+        layout.add(new Text("Art des Triggers:"), 0, rowCounter);
+        layout.add(triggerTypeLayout, 1, rowCounter);
+        rowCounter++;
+        layout.add(new Text("Trigger auslösen bei"), 0, rowCounter);
+        layout.add(triggerRangeLayout, 1, rowCounter);
+        rowCounter++;
+        layout.add(buttonLayout, 1, rowCounter);
 
         EventHandler<ActionEvent> createriggerHandler = new EventHandler<ActionEvent>() {
             @Override
