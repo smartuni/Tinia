@@ -69,8 +69,8 @@ public class MessageHandler {
     private static void handleWindgeschwindigkeit(UplinkMessage message, Daten daten) {
 
         Double wert = ((Double) message.getPayloadFields().get("analog_out_1"));
-        Long ganzZahlWert = Math.round(wert);
-
+        Long ganzZahlWert = (Math.round(wert) < 0) ? 0 : Math.round(wert);
+        System.out.println("Windgeschwindigkeit erhalten: " + ganzZahlWert);
         daten.addWindgeschwindigkeit(new Windgeschwindigkeit(ganzZahlWert.intValue(), new Date()));
 
 

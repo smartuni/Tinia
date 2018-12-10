@@ -13,7 +13,6 @@ public class Daten {
 
     public void addWindgeschwindigkeit(Windgeschwindigkeit windgeschwindigkeit) {
         this.windGeschwindigkeiten.add(windgeschwindigkeit);
-        System.out.println("Länge Array: " + windGeschwindigkeiten.size());
     }
 
     public ArrayList<Windgeschwindigkeit> getWindGeschwindigkeiten() {
