@@ -125,7 +125,41 @@ public class TriggerScene implements GUIScene {
         );
         triggerCondition.getColumns().addAll(triggerRange, triggerValue);
 
-        table.getColumns().addAll(triggerName, triggerType, triggerActive, triggerCondition);
+        TableColumn actionCol = new TableColumn("Action");
+        //actionCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
+        Callback<TableColumn<Trigger, String>, TableCell<Trigger, String>> cellFactory
+                = //
+                new Callback<TableColumn<Trigger, String>, TableCell<Trigger, String>>() {
+                    @Override
+                    public TableCell call(final TableColumn<Trigger, String> param) {
+                        final TableCell<Trigger, String> cell = new TableCell<Trigger, String>() {
+
+                            final Button btn = new Button("Entfernen");
+
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    btn.setOnAction(event -> {
+                                        Trigger triggerObject = getTableView().getItems().get(getIndex());
+                                        gui.getTriggerData().remove(triggerObject);
+                                    });
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        actionCol.setCellFactory(cellFactory);
+
+
+        table.getColumns().addAll(triggerName, triggerType, triggerActive, triggerCondition, actionCol);
         table.setItems(gui.getTriggerData());
         System.out.println(gui.getTriggerData());
         return table;

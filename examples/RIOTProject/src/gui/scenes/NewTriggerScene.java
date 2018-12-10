@@ -13,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -46,7 +47,7 @@ public class NewTriggerScene implements GUIScene {
         col1.setPercentWidth(30);
         ColumnConstraints col2 = new ColumnConstraints();
         col2.setPercentWidth(50);
-        layout.getColumnConstraints().addAll(col1,col2);
+        layout.getColumnConstraints().addAll(col1, col2);
 
         layout.setHgap(10);
         layout.setVgap(10);
@@ -56,6 +57,7 @@ public class NewTriggerScene implements GUIScene {
         triggerRangeComboBox.getItems().setAll(TriggerRange.getClearedValues());
 
         HBox triggerRangeLayout = new HBox(10);
+        HBox buttonLayout = new HBox(10);
         TextField triggerRangerNumber = new TextField();
         triggerRangerNumber.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -69,28 +71,47 @@ public class NewTriggerScene implements GUIScene {
         });
         triggerRangeLayout.getChildren().addAll(triggerRangeComboBox, triggerRangerNumber);
 
+
         ComboBox<TriggerType> triggerTypesComboBox = new ComboBox<>();
         triggerTypesComboBox.getItems().setAll(TriggerType.values());
 
         TextField triggerNameTextField = new TextField();
         Button createTriggerButton = new Button("Trigger anlegen");
+        Button cancelButton = new Button("Abbrechen");
+        buttonLayout.getChildren().addAll(createTriggerButton, cancelButton);
 
         layout.add(new Text("Name: "), 0, 0);
         layout.add(triggerNameTextField, 1, 0);
-        layout.add(new Text("Art des Triggers"), 0, 1);
+        layout.add(new Text("Art des Triggers:"), 0, 1);
         layout.add(triggerTypesComboBox, 1, 1);
         layout.add(new Text("Trigger auslösen bei"), 0, 2);
-        layout.add(triggerRangeLayout, 1,2 );
-        layout.add(createTriggerButton,1,3);
+        layout.add(triggerRangeLayout, 1, 2);
+        layout.add(buttonLayout, 1, 3);
 
         EventHandler<ActionEvent> createriggerHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                gui.getTriggerData().add(new Trigger(triggerNameTextField.getText(), triggerTypesComboBox.getValue(), true, TriggerRange.getValue(triggerRangeComboBox.getValue()), Integer.valueOf(triggerRangerNumber.getText())));
-                gui.getStage().setScene(gui.getTriggerScene().getScene());
+                if (triggerNameTextField.getText().trim().equals("") || triggerRangerNumber.getText().trim().equals("") || triggerTypesComboBox.getValue() == null || triggerRangeComboBox.getValue() == null) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Validierungsfehler");
+                    alert.setHeaderText("Felder nicht vollständig");
+                    alert.setContentText("Bitte alle Felder ausfüllen.");
+                    alert.showAndWait();
+                } else {
+                    gui.getTriggerData().add(new Trigger(triggerNameTextField.getText(), triggerTypesComboBox.getValue(), true, TriggerRange.getValue(triggerRangeComboBox.getValue()), Integer.valueOf(triggerRangerNumber.getText())));
+                    gui.getStage().setScene(gui.getTriggerScene().getScene());
+                }
             }
         };
         createTriggerButton.setOnAction(createriggerHandler);
+
+        EventHandler<ActionEvent> cancelHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                gui.getStage().setScene(gui.getTriggerScene().getScene());
+            }
+        };
+        cancelButton.setOnAction(cancelHandler);
 
         return layout;
     }
