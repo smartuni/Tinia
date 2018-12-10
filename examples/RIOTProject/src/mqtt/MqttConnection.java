@@ -5,6 +5,7 @@ import daten.Daten;
 import org.thethingsnetwork.data.common.Connection;
 import org.thethingsnetwork.data.common.messages.ActivationMessage;
 import org.thethingsnetwork.data.common.messages.DataMessage;
+import org.thethingsnetwork.data.common.messages.DownlinkMessage;
 import org.thethingsnetwork.data.common.messages.UplinkMessage;
 import org.thethingsnetwork.data.mqtt.Client;
 
@@ -42,9 +43,13 @@ public class MqttConnection {
 	
 	private Object doSomethingWithMessage(String devId, DataMessage data) {
 		UplinkMessage uMe = (UplinkMessage) data;
+		DownlinkMessageHandler dMeHandler = new DownlinkMessageHandler(client,devId);
 		System.out.println("Data:" + ((UplinkMessage) data).getPayloadFields());
         try {
             MessageHandler.handleMessage(uMe,daten);
+			DownlinkMessage dMe = new DownlinkMessage(0,"Hallo".getBytes());
+			System.out.println("DevId: " + devId);
+			client.send(devId,dMe);
             gui2.updateGui();
         } catch (Exception e) {
             e.printStackTrace();

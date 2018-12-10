@@ -35,7 +35,7 @@ public class Daten {
 
             c.add(Calendar.YEAR, 0);
             c.add(Calendar.MONTH, 0);
-            c.add(Calendar.DATE, 0); //same with c.add(Calendar.DAY_OF_MONTH, 1);
+            c.add(Calendar.DATE, -20); //same with c.add(Calendar.DAY_OF_MONTH, 1);
             c.add(Calendar.HOUR, -1);
             c.add(Calendar.MINUTE, i);
             c.add(Calendar.SECOND, i);

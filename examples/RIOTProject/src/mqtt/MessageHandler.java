@@ -85,7 +85,7 @@ public class MessageHandler {
 
     private static void handleWindrichtung(UplinkMessage message, Daten daten) {
 
-        Double wert = ((Double) message.getPayloadFields().get("analog_out_3"));
+        Integer wert = ((Integer) message.getPayloadFields().get("analog_out_3"));
         System.out.println("Windrichtungswert erhalten: " + wert);
 
     }
