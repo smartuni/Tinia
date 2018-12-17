@@ -9,33 +9,7 @@
 #include "periph/gpio.h"
 #include "periph/adc.h"
 #include "periph/rtc.h"
-
-typedef enum TYPES {
-    WINDSPEED_TYPE,
-    RAINFALL_TYPE,
-    WINDDIR_TYPE
-} TYPES;
-
-typedef enum PINS {
-    WINDSPEED_PIN,
-    WINDDIR_PIN,
-    RAINFALL_PIN
-} PINS;
-
-typedef enum WIND_DIRECTION {
-    NORTH,
-    NORTHEAST,
-    EAST,
-    SOUTHEAST,
-    SOUTH,
-    SOUTHWEST,
-    WEST,
-    NORTHWEST
-} WIND_DIRECTION;
-
-#define GPIO_PORT       0
-#define TIMEOUT     10000
-#define RESOLUTION ADC_RES_6BIT
+#include "weather.h"
 
 static kernel_pid_t datahandler_pid;
 static kernel_pid_t winddir_pid;
@@ -76,8 +50,10 @@ static void windspeed_callback(void *arg) {
     msg_t msg;
     msg_t msg_queue[8];
     msg_init_queue(msg_queue, 8);
+
     int content = WINDSPEED_TYPE;
     msg.content.ptr = &content;
+    
     msg_send(&msg, winddir_pid);
     msg_send(&msg, datahandler_pid);
 }
@@ -100,11 +76,11 @@ static void *data_handler(void *arg) {
         msg_receive(&msg);
         // if message sender is windspeed
             // calculate new wind speed
-            windspeed = 0;
+            windspeed = measure_wind_speed(0);
             printf("SPD: %i\n", windspeed);
         // if message sender is rainfall
             // calculate new rainfall
-            rainfall = 0;
+            rainfall = measure_rainfall(0);
             printf("RNF: %i\n", rainfall);
         // if message sender is winddir
             // calculate new winddir
@@ -114,15 +90,6 @@ static void *data_handler(void *arg) {
 
     return NULL;
 }
-
-int measure_wind_direction(int wind_adc) {
-    if (wind_adc < 32) {
-        return NORTH; 
-    } else {
-        return SOUTH;
-    }
-}
-
 
 /**
  *  Handles sending data for the wind direction.
@@ -174,8 +141,6 @@ int main(void) {
     puts("Initializing sensors...\n");
 
     last_timestamp = xtimer_now_usec();
-
-    
 
     // rainfall sensor
     puts("rainfall");
