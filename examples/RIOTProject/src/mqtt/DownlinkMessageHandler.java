@@ -48,17 +48,20 @@ public class DownlinkMessageHandler {
                     for (i = 0; i < anzahlPorts; i++) {
                         // Wenn Windgeschwindigkeit gefunden, prüfen ob Trigger ausgelöst wird
                         if (uplinkRaw[i*4] == 1) {
-                            Float wertFloat = (Float) uplink.getPayloadFields().get("analog_out_1");
-                            int wert = (Math.round(wertFloat) < 0) ? 0 : Math.round(wertFloat);
+                            Double wertDouble = (Double) uplink.getPayloadFields().get("analog_out_1");
+                            Long wertLong = (Math.round(wertDouble) < 0) ? 0 : Math.round(wertDouble);
+                            int wert = wertLong.intValue();
                             // Wenn Trigger asugelöst wird, sende Downlink
                             if (trigger.getTriggerRange() == TriggerRange.TRIGGER_ABOVE) {
                                 if (wert > trigger.getValue()) {
                                     sendDownlinkMessage(trigger.getExtraTypeValue());
+                                    System.out.println("Downlink gesendet weil Wert zu hoch: " + wert);
                                     break;
                                 }
                             } else if(trigger.getTriggerRange() == TriggerRange.TRIGGER_UNDER) {
                                 if (wert < trigger.getValue()) {
                                     sendDownlinkMessage(trigger.getExtraTypeValue());
+                                    System.out.println("Downlink gesendet weil Wert zu niedrig: " + wert);
                                     break;
                                 }
                             }

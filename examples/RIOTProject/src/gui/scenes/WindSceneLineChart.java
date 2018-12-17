@@ -144,6 +144,7 @@ public class WindSceneLineChart implements GUIScene {
     }
 
     private void setSeriesToLetzteZehnTageDaten() {
+        seriesTenDays = new XYChart.Series();
         for( Windgeschwindigkeit k: daten.getWindGeschwindigkeiten() )
         {
             Calendar tenDaysAgo = Calendar.getInstance();
@@ -156,6 +157,7 @@ public class WindSceneLineChart implements GUIScene {
     }
 
     private void setSeriesToLetzterMonatDaten() {
+        seriesMonth = new XYChart.Series();
         for( Windgeschwindigkeit k: daten.getWindGeschwindigkeiten() )
         {
             Calendar lastMonth = Calendar.getInstance();
