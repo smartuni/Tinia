@@ -50,6 +50,7 @@ public class TriggerScene implements GUIScene {
 
     private Node triggerTable() {
         TableView table = new TableView();
+        table.setPlaceholder(new Label("Definiere oben rechts den ersten Tinia-Trigger :-)"));
         table.setEditable(true);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         TableColumn triggerName = new TableColumn("Name");
