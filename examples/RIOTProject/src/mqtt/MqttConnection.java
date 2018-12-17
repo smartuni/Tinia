@@ -16,7 +16,7 @@ public class MqttConnection {
 	private String accessKey;
 	
 	private Client client = null;
-	private GUI gui2 = null;
+	private GUI gui = null;
 	private Daten daten;
 	
 
@@ -24,7 +24,7 @@ public class MqttConnection {
 		this.region = region;
 		this.appId = appId;
 		this.accessKey = accessKey;
-		this.gui2 = gui;
+		this.gui = gui;
 		this.daten = daten;
 		createConnection();
 	}
@@ -43,14 +43,11 @@ public class MqttConnection {
 	
 	private Object doSomethingWithMessage(String devId, DataMessage data) {
 		UplinkMessage uMe = (UplinkMessage) data;
-		DownlinkMessageHandler dMeHandler = new DownlinkMessageHandler(client,devId);
+		DownlinkMessageHandler dMeHandler = new DownlinkMessageHandler(client,devId, gui, uMe);
 		System.out.println("Data:" + ((UplinkMessage) data).getPayloadFields());
         try {
             MessageHandler.handleMessage(uMe,daten);
-			DownlinkMessage dMe = new DownlinkMessage(0,"Hallo".getBytes());
-			System.out.println("DevId: " + devId);
-			client.send(devId,dMe);
-            gui2.updateGui();
+            gui.updateGui();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -38,7 +38,7 @@ public class NewTriggerScene implements GUIScene {
     }
 
     private Label infoText() {
-        Label label = new Label("Das folgende Formular liefert die Möglichkeit, einen neuen Trigger für Tinia zu definieren. Trigger ermöglichen es, bei einer bestimmten Bedingung ein Event zu werfen. Im folgenden müssen alle Felder als Pflichtfelder betrachtet werden.");
+        Label label = new Label("Das folgende Formular liefert die Möglichkeit, einen neuen Trigger für Tinia zu definieren. Trigger ermöglichen es, bei einer bestimmten Bedingung ein Event zu werfen. Im Folgenden müssen alle Felder als Pflichtfelder betrachtet werden.");
         label.setWrapText(true);
         return label;
     }
@@ -49,7 +49,7 @@ public class NewTriggerScene implements GUIScene {
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(30);
         ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(50);
+        col2.setPercentWidth(40);
         layout.getColumnConstraints().addAll(col1, col2);
 
         layout.setHgap(10);
@@ -67,6 +67,10 @@ public class NewTriggerScene implements GUIScene {
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
                 if (triggerRangerNumber.getText().length() > 4) {
                     String s = triggerRangerNumber.getText().substring(0, 4);
+                    triggerRangerNumber.setText(s);
+                }
+                if (triggerRangerNumber.getText().startsWith("0") && triggerRangerNumber.getText().length() != 1) {
+                    String s = triggerRangerNumber.getText().substring(1, triggerRangerNumber.getText().length());
                     triggerRangerNumber.setText(s);
                 }
                 triggerRangerNumber.setText(triggerRangerNumber.getText().replaceAll("[^0-9]", ""));
