@@ -11,5 +11,5 @@ int measure_wind_speed(int wind_adc) {
 
 
 int measure_rainfall(int counter) {
-    return counter * 2794;
+    return counter * 2.794;
 }
