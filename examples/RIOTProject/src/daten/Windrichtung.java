@@ -1,32 +1,12 @@
 package daten;
 
-import org.apache.commons.lang3.time.DateUtils;
-
-import java.util.Calendar;
 import java.util.Date;
 
-public class Windrichtung {
+public class Windrichtung extends WindDaten {
 
     private Integer windrichtung;
-    private Date zeitpunkt;
     private String readableWindrichtung;
     private String readableZeitpunkt;
-
-    public Date getZeitpunkt() {
-        return zeitpunkt;
-    }
-
-    public String getReadableTimestamp() {
-        Calendar today = Calendar.getInstance();
-        today.setTime(new Date());
-        Calendar directionTime = Calendar.getInstance();
-        directionTime.setTime(zeitpunkt);
-        if(DateUtils.isSameDay(today, directionTime)) {
-            return "Heute, "+ directionTime.get(Calendar.HOUR) + ":" + directionTime.get(Calendar.MINUTE) + ":" + directionTime.get(Calendar.SECOND);
-        } else {
-            return directionTime.get(Calendar.DAY_OF_MONTH)+"."+directionTime.get(Calendar.MONTH)+"."+directionTime.get(Calendar.YEAR)+" - " + directionTime.get(Calendar.HOUR) + ":" + directionTime.get(Calendar.MINUTE) + ":" + directionTime.get(Calendar.SECOND);
-        }
-    }
 
     public void setReadableWindrichtung(int windrichtung) {
         switch (windrichtung) {
@@ -75,8 +55,8 @@ public class Windrichtung {
     }
 
     public Windrichtung(Integer windrichtung, Date zeitpunkt) {
+        super(zeitpunkt);
         this.windrichtung = windrichtung;
-        this.zeitpunkt = zeitpunkt;
         setReadableWindrichtung(windrichtung);
         setReadableZeitpunkt(getReadableTimestamp());
     }
@@ -84,6 +64,6 @@ public class Windrichtung {
 
     @Override
     public String toString() {
-       return "Windrichtung: " + getReadableWindrichtung() + ", Datum: " + zeitpunkt;
+        return "Windrichtung: " + getReadableWindrichtung() + ", Datum: " + getZeitpunkt();
     }
 }
