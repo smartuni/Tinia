@@ -55,7 +55,7 @@
     -fx-text-fill: black;
 }
 
-.scene {
-    -fx-min-width: 800;
-    -fx-min-height: 500;
+#overViewPane {
+    -fx-font-size: 15;
+    -fx-padding: 20 20 20 20;
 }

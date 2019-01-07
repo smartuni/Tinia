@@ -74,6 +74,7 @@ public class WindrichtungTableScene implements GUIScene {
             }
         });
 
+
         layout.getChildren().addAll(windrichtungTable(),linkZurueck,linkMonitor);
     }
 

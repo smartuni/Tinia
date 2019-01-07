@@ -7,6 +7,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
@@ -47,7 +48,7 @@ public class WindRichtungScene implements GUIScene {
 
         Hyperlink chartLink = new Hyperlink("Historische Windrichtungen");
         chartLink.setBorder(Border.EMPTY);
-        chartLink.setPadding(new Insets(0, 5, 4, 5));
+        chartLink.setPadding(new Insets(0, 10, 50, 10));
         chartLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -57,7 +58,7 @@ public class WindRichtungScene implements GUIScene {
 
         Hyperlink linkZurueck = new Hyperlink("Zurück");
         linkZurueck.setBorder(Border.EMPTY);
-        linkZurueck.setPadding(new Insets(0, 5, 4, 5));
+        linkZurueck.setPadding(new Insets(0, 5, 50, 5));
         linkZurueck.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -68,6 +69,7 @@ public class WindRichtungScene implements GUIScene {
 
         HBox valueLayout = new HBox();
         valueLayout.setSpacing(10);
+        valueLayout.setAlignment(Pos.BOTTOM_CENTER);
         valueLayout.getChildren().addAll(chartLink,linkZurueck);
         return valueLayout;
     }

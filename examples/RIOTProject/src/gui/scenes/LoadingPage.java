@@ -6,6 +6,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
@@ -39,7 +40,7 @@ public class LoadingPage implements GUIScene {
 
         Hyperlink overviewPage = new Hyperlink("Übersichtsseite");
         overviewPage.setBorder(Border.EMPTY);
-        overviewPage.setPadding(new Insets(0, 5, 15, 25));
+        overviewPage.setPadding(new Insets(0, 5, 50, 25));
         overviewPage.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -49,6 +50,7 @@ public class LoadingPage implements GUIScene {
 
         HBox valueLayout = new HBox(10);
         valueLayout.setSpacing(10);
+        valueLayout.setAlignment(Pos.BOTTOM_CENTER);
         valueLayout.getChildren().addAll(overviewPage);
         return valueLayout;
     }
