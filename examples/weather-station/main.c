@@ -13,8 +13,9 @@
 #include "debug.h"
 
 static kernel_pid_t datahandler_pid;
-// static kernel_pid_t winddir_pid;
-static char stack[THREAD_STACKSIZE_MAIN];
+static kernel_pid_t winddir_pid;
+static char data_handler_stack[THREAD_STACKSIZE_DEFAULT];
+static char wind_dir_stack[THREAD_STACKSIZE_DEFAULT];
 
 int last_timestamp;
 
@@ -26,14 +27,11 @@ static void rain_callback(void *arg) {
     (void) arg;
     
     msg_t msg;
-    msg_t msg_queue[8];
-    msg_init_queue(msg_queue, 8);
 
     int current_timestamp = xtimer_now_usec();
     int timediff = current_timestamp - last_timestamp;
     // only if current call is out of the time window
     if (timediff > TIMEOUT) {
-        printf("TRIGGER_RAINFALL: %i\n", timediff);
         msg.type = RAINFALL_TYPE;
         msg_send(&msg, datahandler_pid);
     }
@@ -45,21 +43,14 @@ static void rain_callback(void *arg) {
 /**
  *  Sends a message to the data handler every time the function was called. 
  */
-// static void windspeed_callback(void *arg) {
-//     DEBUG("TRIGGERED WINDSPEED CALLBACK");
-    
-//     (void) arg;
+static void windspeed_callback(void *arg) {
+    (void) arg;
 
-//     msg_t msg;
-//     msg_t msg_queue[8];
-//     msg_init_queue(msg_queue, 8);
-
-//     int content = WINDSPEED_TYPE;
-//     msg.content.ptr = &content;
-    
-//     msg_send(&msg, winddir_pid);
-//     msg_send(&msg, datahandler_pid);
-// }
+    msg_t msg;
+    msg.type = WINDSPEED_TYPE;
+    msg_send(&msg, winddir_pid);
+    msg_send(&msg, datahandler_pid);
+}
 
 /**
  *  Handles incoming data messages and calculates outgoing weather data.
@@ -71,18 +62,13 @@ static void *data_handler(void *arg) {
     int wind_counter = 0;
 
     int windspeed;
-    // int rainfall;
+    int rainfall;
     int winddir;
 
     msg_t msg;
-    msg_t msg_queue[8];
-    msg_init_queue(msg_queue, 8);
-
-    puts("Initialized data handler queue.");
     
     while (1) {
         msg_receive(&msg);
-        printf("Recieved message: %i\n", msg.type);
         if (msg.type == WINDSPEED_TYPE)
         {            
             windspeed = measure_wind_speed(++wind_counter);
@@ -90,13 +76,12 @@ static void *data_handler(void *arg) {
         }
         if (msg.type == RAINFALL_TYPE)
         {
-            measure_rainfall(++rain_counter);
-            printf("RNF: %i\n", rain_counter);
+            rainfall = measure_rainfall(++rain_counter);
+            printf("RNF: %i\n", rainfall);
         }
         if (msg.type == WINDDIR_TYPE)
         {
-            // winddir = measure_wind_direction(msg);
-            winddir = 0;
+            winddir = measure_wind_direction(msg.content.value);
             printf("DIR: %i\n", winddir);
         }
     }
@@ -107,44 +92,41 @@ static void *data_handler(void *arg) {
 /**
  *  Handles sending data for the wind direction.
  */
-// static void *winddir_handler(void *arg) {
-//     (void) arg;
-//     int wind_direction;
-//     int adc_value;
+static void *winddir_handler(void *arg) {
+    (void) arg;
+    int adc_value;
     
-//     msg_t msg;
-//     msg_t msg_queue[8];
-//     msg_init_queue(msg_queue, 8);
+    msg_t msg;
 
-//     /* initialize wind output */
-//     if (adc_init(ADC_LINE(WINDDIR_PIN)) < 0) {
-//         puts("Initialization of wind sensor pin failed\n");
-//     } else {
-//         puts("Successfully initialized wind sensor pin\n");
-//     }
-//     DEBUG("wind direction initialized\n");
+    /* initialize wind output */
+    if (adc_init(ADC_LINE(WINDDIR_PIN)) < 0) {
+        puts("Initialization of wind sensor pin failed\n");
+    } else {
+        puts("Successfully initialized wind sensor pin\n");
+    }
+    printf("wind direction initialized\n");
 
 
     
-//     while (1) {
-//         msg_receive(&msg);
-//         // if wind speed is > least wind speed needed
-//                 adc_value = adc_sample(ADC_LINE(WINDDIR_PIN), RESOLUTION);
-//                 wind_direction = measure_wind_direction(adc_value);
-//                 msg.content.ptr = &wind_direction;
-//                 msg_send(&msg, datahandler_pid);
-//     }
+    while (1) {
+        msg_receive(&msg);
+        // TODO: if wind speed is > least wind speed needed
+            adc_value = adc_sample(ADC_LINE(WINDDIR_PIN), RESOLUTION);
+            msg.type = WINDDIR_TYPE;
+            msg.content.value = adc_value;
+            msg_send(&msg, datahandler_pid);
+    }
 
-//     return NULL;
-// }
+    return NULL;
+}
 
 
 int main(void) {
     
     // data handler thread
     puts("Starting TINIA main application thread ...");
-    datahandler_pid = thread_create(stack, sizeof(stack),
-                        THREAD_PRIORITY_MAIN - 2,
+    datahandler_pid = thread_create(data_handler_stack, sizeof(data_handler_stack),
+                        THREAD_PRIORITY_MAIN - 1,
                         0,
                         data_handler,
                         NULL, "data handler thread");
@@ -153,6 +135,15 @@ int main(void) {
 
     // data sensor threads
     puts("Initializing sensors...\n");
+
+    // wind direction sensor
+    puts("winddirection");
+    // weather direction thread
+    winddir_pid = thread_create(wind_dir_stack, sizeof(wind_dir_stack),
+                        THREAD_PRIORITY_MAIN - 1,
+                        0,
+                        winddir_handler,
+                        NULL, "wind direction thead");
 
     last_timestamp = xtimer_now_usec();
 
@@ -168,25 +159,12 @@ int main(void) {
     
 
     // wind speed sensor
-    // puts("windspeed");
-    // if (gpio_init_int(GPIO_PIN(GPIO_PORT, WINDSPEED_PIN), 2, 0, windspeed_callback, (void *) &last_timestamp) < 0) {
-    //     printf("error: init_int of GPIO_PIN(%i, %i) failed\n", GPIO_PORT, WINDSPEED_PIN);
-    //     return 1;
-    // }
-    // printf("GPIO_PIN(%i, %i) successfully initialized as ext int\n", GPIO_PORT, WINDSPEED_PIN);
-
-    
-
-    // // wind direction sensor
-    // puts("winddirection");
-    // // weather direction thread
-    // winddir_pid = thread_create(stack, sizeof(stack),
-    //                     THREAD_PRIORITY_MAIN - 1,
-    //                     0,
-    //                     winddir_handler,
-    //                     NULL, "wind direction thead");
-    // puts("complete\n");
-
+    puts("windspeed");
+    if (gpio_init_int(GPIO_PIN(GPIO_PORT, WINDSPEED_PIN), GPIO_IN_PD, GPIO_FALLING, windspeed_callback, (void *) &last_timestamp) < 0) {
+        printf("error: init_int of GPIO_PIN(%i, %i) failed\n", GPIO_PORT, WINDSPEED_PIN);
+        return 1;
+    }
+    printf("GPIO_PIN(%i, %i) successfully initialized as ext int\n", GPIO_PORT, WINDSPEED_PIN);
 
     puts("Initialized weather sensors.");
 

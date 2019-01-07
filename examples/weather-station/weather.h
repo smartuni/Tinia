@@ -5,7 +5,7 @@ typedef enum TYPES {
 } TYPES;
 
 typedef enum PINS {
-    WINDSPEED_PIN = 2,
+    WINDSPEED_PIN = 4,
     WINDDIR_PIN = 1,
     RAINFALL_PIN = 0
 } PINS;
