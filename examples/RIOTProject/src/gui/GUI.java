@@ -17,6 +17,8 @@ public class GUI extends Application {
 
     private LoadingPage initScene;
     private WindScene windScene = new WindScene(daten, this);
+    private WindRichtungScene windRichtungScene = new WindRichtungScene(daten,this);
+    private WindrichtungTableScene windrichtungTableScene = new WindrichtungTableScene(daten,this);
     private TriggerScene triggerScene;
 
     private OverviewPage overviewPage;
@@ -39,6 +41,9 @@ public class GUI extends Application {
         return this.windLineChart;
     }
 
+    public WindRichtungScene getWindRichtungScene() {
+        return windRichtungScene;
+    }
 
     public OverviewPage getOverviewPage() {
         return overviewPage;
@@ -51,6 +56,8 @@ public class GUI extends Application {
     public TriggerScene getTriggerScene() {
         return this.triggerScene;
     }
+
+    public WindrichtungTableScene getWindrichtungTableScene() { return this.windrichtungTableScene;}
 
     @Override
     public void init() {

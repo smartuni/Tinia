@@ -37,6 +37,10 @@ public class OverviewPage implements GUIScene {
         layout.setTop(GUIUtils.createFancyHeadline("Übersicht"));
         layout.setCenter(overviewAllData());
         layout.setBottom(bottomLinkBar());
+        gui.getWindScene().updateText();
+        gui.getWindRichtungScene().updateText();
+
+
     }
 
     private Node overviewAllData() {
@@ -60,6 +64,7 @@ public class OverviewPage implements GUIScene {
         gridPane.add(new Text("Wind:"), 0, 0);
         gridPane.add(new Text(daten.getWindGeschwindigkeiten().get(daten.getWindGeschwindigkeiten().size() - 1).getGeschwindigkeit() + " km / h"), 1, 0);
         gridPane.add(new Text("Windrichtung:"), 0, 1);
+        gridPane.add(new Text(daten.getWindrichtungen().get(daten.getWindrichtungen().size() - 1).getReadableWindrichtung()), 1, 1);
         gridPane.add(new Text(""), 1, 1);
         gridPane.add(new Text("Niederschlag:"), 0, 2);
         gridPane.add(new Text(""), 1, 2);
@@ -76,7 +81,6 @@ public class OverviewPage implements GUIScene {
         windLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                gui.getWindScene().updateText();
                 gui.getStage().setScene(gui.getWindScene().getScene());
             }
         });
@@ -84,12 +88,12 @@ public class OverviewPage implements GUIScene {
         Hyperlink windDirectionLink = new Hyperlink("Wind-Richtung");
         windDirectionLink.setBorder(Border.EMPTY);
         windDirectionLink.setPadding(new Insets(0, 0, 4, 15));
-        /*overviewLink.setOnAction(new EventHandler<ActionEvent>() {
+        windDirectionLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                gui.getStage().setScene(gui.getWindScene().getScene());
+                gui.getStage().setScene(gui.getWindRichtungScene().getScene());
             }
-        });*/
+        });
 
         Hyperlink rainfallLink = new Hyperlink("Niederschlag");
         rainfallLink.setBorder(Border.EMPTY);

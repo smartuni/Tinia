@@ -23,6 +23,13 @@
     -fx-font-weight: bold;
 }
 
+#windRichtungMessungText {
+    -fx-font-family: Verdana;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-text-color: black;
+}
+
 #windMessungText {
     -fx-font-family: Verdana;
     -fx-font-size: 70;
