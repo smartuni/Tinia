@@ -70,20 +70,31 @@ public class WindSceneLineChart implements GUIScene {
             series.getData().add(new XYChart.Data(k.getReadableTimestamp(), k.getGeschwindigkeit().intValue()));
         }
 
-        this.scene  = new Scene(layout,800,500);
+        this.scene = new Scene(layout,1540,800);
+        this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
         lineChart.getData().add(series);
 
-        Hyperlink linkMonitor = new Hyperlink("Zum Monitor");
-        linkMonitor.setBorder(Border.EMPTY);
-        linkMonitor.setPadding(new Insets(4, 0, 4, 4));
-        linkMonitor.setOnAction(new EventHandler<ActionEvent>() {
+        Hyperlink linkZurueck = new Hyperlink("Zurück");
+        linkZurueck.setBorder(Border.EMPTY);
+        linkZurueck.setPadding(new Insets(4, 0, 4, 4));
+        linkZurueck.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 gui.getStage().setScene(gui.getWindScene().getScene());
             }
         });
 
-        layout.getChildren().addAll(buttonLeiste(), lineChart, linkMonitor);
+        Hyperlink linkUebersicht = new Hyperlink("Zurück zur Übersicht");
+        linkUebersicht.setBorder(Border.EMPTY);
+        linkUebersicht.setPadding(new Insets(4, 0, 4, 4));
+        linkUebersicht.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                gui.getStage().setScene(gui.getOverviewPage().getScene());
+            }
+        });
+
+        layout.getChildren().addAll(buttonLeiste(), lineChart, linkZurueck,linkUebersicht);
 
     }
 

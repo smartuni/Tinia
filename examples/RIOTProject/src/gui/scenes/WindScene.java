@@ -41,7 +41,7 @@ public class WindScene implements GUIScene {
         this.daten = daten;
         BorderPane layout = new BorderPane();
         layout.setPadding(new Insets(10, 20, 10, 20));
-        this.scene = new Scene(layout, 800, 500);
+        this.scene = new Scene(layout,1540,800);
         layout.setId("pane");
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
         layout.setTop(initHeadline());
@@ -51,9 +51,9 @@ public class WindScene implements GUIScene {
 
     private Node initMinMaxValue() {
 
-        Hyperlink chartLink = new Hyperlink("Zum Chart");
+        Hyperlink chartLink = new Hyperlink("Historische Windgeschwindigkeiten");
         chartLink.setBorder(Border.EMPTY);
-        chartLink.setPadding(new Insets(0, 0, 4, 0));
+        chartLink.setPadding(new Insets(0, 5, 4, 5));
         chartLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -63,9 +63,8 @@ public class WindScene implements GUIScene {
 
 
         Hyperlink triggerLink = new Hyperlink("Trigger verwalten");
-        triggerLink.setId("linkLeiste");
         triggerLink.setBorder(Border.EMPTY);
-        triggerLink.setPadding(new Insets(0, 0, 4, 0));
+        triggerLink.setPadding(new Insets(0, 5, 4, 5));
         triggerLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -107,7 +106,7 @@ public class WindScene implements GUIScene {
             minValue = new Windgeschwindigkeit(wert, new Date());
             minText.setText("Min: " + wert + " km/h");
         }
-        messungText.setText(wert + " km/h");
+        messungText.setText("Aktuelle Windgeschwindigkeit: "+wert + " km/h");
 
         gui.getTriggerData().forEach((t) -> {
             Trigger trigger = (Trigger) t;

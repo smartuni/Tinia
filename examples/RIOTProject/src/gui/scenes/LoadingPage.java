@@ -3,9 +3,15 @@ package gui.scenes;
 import gui.GUI;
 import gui.GUIUtils;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
 import java.util.Timer;
@@ -22,11 +28,29 @@ public class LoadingPage implements GUIScene {
     public LoadingPage(GUI gui) {
         this.gui = gui;
         BorderPane layout = new BorderPane();
-        this.scene = new Scene(layout, 800, 500);
+        this.scene = new Scene(layout,1540,800);
         layout.setId("pane");
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
         layout.setCenter(initText());
-        layout.setBottom(GUIUtils.overviewLink(gui));
+        layout.setBottom(initLinks());
+    }
+
+    private Node initLinks() {
+
+        Hyperlink overviewPage = new Hyperlink("Übersichtsseite");
+        overviewPage.setBorder(Border.EMPTY);
+        overviewPage.setPadding(new Insets(0, 5, 15, 25));
+        overviewPage.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                gui.getStage().setScene(gui.getOverviewPage().getScene());
+            }
+        });
+
+        HBox valueLayout = new HBox(10);
+        valueLayout.setSpacing(10);
+        valueLayout.getChildren().addAll(overviewPage);
+        return valueLayout;
     }
 
     private Node initText() {

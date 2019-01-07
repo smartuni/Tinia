@@ -42,7 +42,7 @@ public class TriggerScene implements GUIScene {
         this.gui = gui;
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10, 10, 10, 10));
-        this.scene = new Scene(layout, 800, 500);
+        this.scene = new Scene(layout,1540,800);
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
         layout.getChildren().addAll(GUIUtils.createFancyHeadline("Trigger verwalten"), addTrigger(), triggerTable(), footerLink());
 
@@ -198,7 +198,7 @@ public class TriggerScene implements GUIScene {
     }
 
     private Node footerLink() {
-        Hyperlink linkMonitor = new Hyperlink("Zum Monitor");
+        Hyperlink linkMonitor = new Hyperlink("Zurück");
         linkMonitor.setBorder(Border.EMPTY);
         linkMonitor.setPadding(new Insets(4, 0, 4, 4));
         linkMonitor.setOnAction(new EventHandler<ActionEvent>() {

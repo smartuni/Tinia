@@ -35,7 +35,7 @@ public class WindRichtungScene implements GUIScene {
         this.daten = daten;
         BorderPane layout = new BorderPane();
         layout.setPadding(new Insets(10, 20, 10, 20));
-        this.scene = new Scene(layout, 800, 500);
+        this.scene = new Scene(layout,1540,800);
         layout.setId("pane");
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
         layout.setTop(initHeadline());
@@ -47,7 +47,7 @@ public class WindRichtungScene implements GUIScene {
 
         Hyperlink chartLink = new Hyperlink("Historische Windrichtungen");
         chartLink.setBorder(Border.EMPTY);
-        chartLink.setPadding(new Insets(0, 0, 4, 0));
+        chartLink.setPadding(new Insets(0, 5, 4, 5));
         chartLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -55,10 +55,20 @@ public class WindRichtungScene implements GUIScene {
             }
         });
 
+        Hyperlink linkZurueck = new Hyperlink("Zurück");
+        linkZurueck.setBorder(Border.EMPTY);
+        linkZurueck.setPadding(new Insets(0, 5, 4, 5));
+        linkZurueck.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                gui.getStage().setScene(gui.getOverviewPage().getScene());
+            }
+        });
+
 
         HBox valueLayout = new HBox();
         valueLayout.setSpacing(10);
-        valueLayout.getChildren().addAll(chartLink);
+        valueLayout.getChildren().addAll(chartLink,linkZurueck);
         return valueLayout;
     }
 

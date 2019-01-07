@@ -86,11 +86,11 @@ public class MessageHandler {
 
     private static void handleWindrichtung(UplinkMessage message, Daten daten) {
 
-        Double wert = ((Double) message.getPayloadFields().get("analog_out_3"));
-        Long ganzZahlWert = (Math.round(wert) < 0) ? 0 : Math.round(wert);
-       // Integer wert = ((Integer) message.getPayloadFields().get("analog_out_3"));
+       // Double wert = ((Double) message.getPayloadFields().get("analog_out_3"));
+       // Long ganzZahlWert = (Math.round(wert) < 0) ? 0 : Math.round(wert);
+        Integer wert = ((Integer) message.getPayloadFields().get("analog_out_3"));
         System.out.println("Windrichtungswert erhalten: " + wert);
-        daten.addWindrichtung(new Windrichtung(ganzZahlWert.intValue(),new Date()));
+        daten.addWindrichtung(new Windrichtung(wert,new Date()));
 
     }
 
