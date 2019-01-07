@@ -1,7 +1,11 @@
 package gui;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -19,5 +23,19 @@ public class GUIUtils {
         text.setStyle("-fx-margin: 10px");
         vb.getChildren().add(text);
         return vb;
+    }
+
+    public static Node overviewLink(GUI gui) {
+        Hyperlink overviewPage = new Hyperlink("Übersichtsseite");
+        overviewPage.setBorder(Border.EMPTY);
+        overviewPage.setPadding(new Insets(0, 0, 4, 0));
+        overviewPage.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                gui.getStage().setScene(gui.getOverviewPage().getScene());
+            }
+        });
+
+        return overviewPage;
     }
 }

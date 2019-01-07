@@ -2,6 +2,7 @@ package gui.scenes;
 
 import daten.*;
 import gui.GUI;
+import gui.GUIUtils;
 import gui.dialogs.TriggerDialog;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
@@ -13,10 +14,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 import java.util.Date;
 
@@ -76,7 +74,7 @@ public class WindScene implements GUIScene {
 
         HBox valueLayout = new HBox();
         valueLayout.setSpacing(10);
-        valueLayout.getChildren().addAll(minText, maxText, chartLink, triggerLink);
+        valueLayout.getChildren().addAll(minText, maxText, chartLink, triggerLink, GUIUtils.overviewLink(gui));
         return valueLayout;
     }
 
