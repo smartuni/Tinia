@@ -49,6 +49,7 @@ public class LoadingPage implements GUIScene {
         overviewLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                stopTimer();
                 gui.getStage().setScene(gui.getOverviewPage().getScene());
             }
         });
