@@ -10,16 +10,38 @@
 #include "periph/adc.h"
 #include "periph/rtc.h"
 #include "weather.h"
-#include "lorawan.h"
 #include "debug.h"
+#include "fmt.h"
+#include "net/loramac.h"
+#include "semtech_loramac.h"
+#include "cayenne_lpp.h"
 
 static kernel_pid_t datahandler_pid;
 static kernel_pid_t winddir_pid;
+static kernel_pid_t sender_pid;
+static char sender_stack[THREAD_STACKSIZE_MAIN / 2];
 static char data_handler_stack[THREAD_STACKSIZE_DEFAULT];
 static char wind_dir_stack[THREAD_STACKSIZE_DEFAULT];
+static uint8_t deveui[LORAMAC_DEVEUI_LEN];
+static uint8_t appeui[LORAMAC_APPEUI_LEN];
+static uint8_t appkey[LORAMAC_APPKEY_LEN];
+static cayenne_lpp_t lpp;
+
+semtech_loramac_t loramac;
+
+
+/* Messages are sent every 20s to respect the duty cycle on each channel */
+#define PERIOD              (20U)
+
+#define SENDER_PRIO         (THREAD_PRIORITY_MAIN - 1)
+
 
 int last_timestamp;
 int windspeed_max;
+int windspeed;
+int rainfall;
+int winddir;
+
 /**
  *  Sends a message to the data handler if the window between the current 
  *  and last call is longer than a specified timeout.
@@ -62,9 +84,6 @@ static void *data_handler(void *arg) {
     int rain_counter = 0;
     int wind_counter = 0;
 
-    int windspeed;
-    int rainfall;
-    int winddir;
 
     msg_t msg;
     
@@ -75,7 +94,7 @@ static void *data_handler(void *arg) {
             windspeed = measure_wind_speed(++wind_counter);
             if (windspeed > windspeed_max)
                 {
-                    windspeed_max == windspeed;
+                    windspeed_max = windspeed;
                 }
             printf("SPD: %i\n", windspeed);
         }
@@ -126,7 +145,83 @@ static void *winddir_handler(void *arg) {
 }
 
 
+/* +++++++ LoraWan functions +++++++ */
+
+
+static void _print_buffer(const uint8_t *buffer, size_t len, const char *msg)
+{
+    printf("%s: ", msg);
+    for (uint8_t i = 0; i < len; i++) {
+        printf("%02X", buffer[i]);
+    }
+}
+
+
+static void rtc_cb(void *arg)
+{
+    (void) arg;
+    msg_t msg;
+    msg_send(&msg, sender_pid);
+}
+
+static void _prepare_next_alarm(void)
+{
+    struct tm time;
+    rtc_get_time(&time);
+    /* set initial alarm */
+    time.tm_sec += PERIOD;
+    mktime(&time);
+    rtc_set_alarm(&time, rtc_cb, NULL);
+}
+
+static void _send_message(void)
+{
+    //printf("Sending: %d\n", message);
+    //_print_buffer(lpp.buffer, lpp.cursor, "Result\n");
+    printf("SEND DATA\n");
+    /* The send call blocks until done */
+    /* Define how big the payload is by changing the last number */
+    semtech_loramac_send(&loramac,(uint8_t *) &lpp, 16);
+    /* Wait until the send cycle has completed */
+    //uint8_t ret;
+    semtech_loramac_recv(&loramac);
+    //printf("Downlink Message: %d \n", ret);
+
+}
+
+static void *sender(void *arg)
+{
+    (void)arg;
+
+    msg_t msg;
+    msg_t msg_queue[8];
+    msg_init_queue(msg_queue, 8);
+
+    while (1) {
+        msg_receive(&msg);
+
+        /* Trigger the message send */
+        _send_message();
+
+        /* Schedule the next wake-up alarm */
+        _prepare_next_alarm();
+    }
+
+    /* this should never be reached */
+    return NULL;
+}
+
+
+
+
+/***********MAIN*************/
 int main(void) {
+
+    cayenne_lpp_add_analog_output(&lpp, 1, windspeed);
+    cayenne_lpp_add_analog_output(&lpp, 2, windspeed_max);
+    cayenne_lpp_add_analog_output(&lpp, 3, winddir);
+    cayenne_lpp_add_analog_output(&lpp, 4, rainfall);
+    _print_buffer(lpp.buffer, lpp.cursor, "Result");
     
     // data handler thread
     puts("Starting TINIA main application thread ...");
@@ -203,20 +298,9 @@ int main(void) {
     puts("Join procedure succeeded"); 
 
 
-    cayenne_lpp_add_analog_output(&lpp, 1, windspeed);
-    cayenne_lpp_add_analog_output(&lpp, 2, windspeed_max);
-    cayenne_lpp_add_analog_output(&lpp, 3, winddir);
-    cayenne_lpp_add_analog_output(&lpp, 4, rainfall);
-    _print_buffer(lpp.buffer, lpp.cursor, "Result");
-
     puts("==============================\n");
     puts("====== Welcome to TINIA ======\n");
     puts("==============================\n");
-
-    // shell
-    char line_buf[SHELL_DEFAULT_BUFSIZE];
-    shell_run(NULL, line_buf, SHELL_DEFAULT_BUFSIZE);
-
 
     /* start the sender thread */
     sender_pid = thread_create(sender_stack, sizeof(sender_stack),
@@ -225,6 +309,10 @@ int main(void) {
     /* trigger the first send */
     msg_t msg;
     msg_send(&msg, sender_pid);
+
+    // shell
+    char line_buf[SHELL_DEFAULT_BUFSIZE];
+    shell_run(NULL, line_buf, SHELL_DEFAULT_BUFSIZE);
 
     return 0;
 }

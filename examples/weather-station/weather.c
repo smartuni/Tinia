@@ -34,7 +34,7 @@ int measure_wind_direction(int wind_adc) {
 
 
 int measure_wind_speed(int wind_counter) {
-  return windspeed;
+  return wind_counter;
 }
 
 
