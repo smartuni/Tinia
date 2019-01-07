@@ -20,11 +20,10 @@ public class Windgeschwindigkeit {
 
         Calendar windTime = Calendar.getInstance();
         windTime.setTime(zeitpunkt);
-
         if(DateUtils.isSameDay(today, windTime)) {
-            return "Heute, "+ windTime.get(Calendar.HOUR) + ":" + windTime.get(Calendar.MINUTE) + ":" + windTime.get(Calendar.SECOND);
+            return "Heute, " + String.format("%02d:%02d:%02d", windTime.get(Calendar.HOUR), windTime.get(Calendar.MINUTE), windTime.get(Calendar.SECOND));
         } else {
-            return windTime.get(Calendar.DAY_OF_MONTH)+"."+windTime.get(Calendar.MONTH)+"."+windTime.get(Calendar.YEAR)+" - " + windTime.get(Calendar.HOUR) + ":" + windTime.get(Calendar.MINUTE) + ":" + windTime.get(Calendar.SECOND);
+            return String.format("%02d.%02d.%04d", windTime.get(Calendar.DAY_OF_MONTH), windTime.get(Calendar.MONTH), windTime.get(Calendar.YEAR)) + " - " + String.format("%02d:%02d:%02d", windTime.get(Calendar.HOUR), windTime.get(Calendar.MINUTE), windTime.get(Calendar.SECOND));
         }
 
     }
