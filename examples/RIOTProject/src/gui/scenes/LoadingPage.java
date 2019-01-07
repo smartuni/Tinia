@@ -1,14 +1,10 @@
 package gui.scenes;
 
 import gui.GUI;
+import gui.GUIUtils;
 import javafx.embed.swing.JFXPanel;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
@@ -30,7 +26,7 @@ public class LoadingPage implements GUIScene {
         layout.setId("pane");
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
         layout.setCenter(initText());
-        layout.setBottom(linkToOverview());
+        layout.setBottom(GUIUtils.overviewLink(gui));
     }
 
     private Node initText() {
@@ -40,20 +36,6 @@ public class LoadingPage implements GUIScene {
         timer = new Timer(true);
         timer.schedule(new ShowLoading(text), 0, 1111);
         return text;
-    }
-
-    private Node linkToOverview() {
-        Hyperlink overviewLink = new Hyperlink("Zur Übersichtsseite");
-        overviewLink.setBorder(Border.EMPTY);
-        overviewLink.setPadding(new Insets(0, 0, 4, 15));
-        overviewLink.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                stopTimer();
-                gui.getStage().setScene(gui.getOverviewPage().getScene());
-            }
-        });
-        return overviewLink;
     }
 
     public void stopTimer() {

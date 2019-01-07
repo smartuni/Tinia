@@ -37,7 +37,6 @@ public class Windgeschwindigkeit {
         this.zeitpunkt = zeitpunkt;
     }
 
-
     @Override
     public String toString() {
        return "Windgeschwindigkeit: " + geschwindigkeit + ", Datum: " + zeitpunkt;
