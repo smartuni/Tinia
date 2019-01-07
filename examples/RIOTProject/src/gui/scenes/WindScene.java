@@ -63,6 +63,7 @@ public class WindScene implements GUIScene {
 
 
         Hyperlink triggerLink = new Hyperlink("Trigger verwalten");
+        triggerLink.setId("linkLeiste");
         triggerLink.setBorder(Border.EMPTY);
         triggerLink.setPadding(new Insets(0, 0, 4, 0));
         triggerLink.setOnAction(new EventHandler<ActionEvent>() {

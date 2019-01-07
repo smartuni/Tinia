@@ -1,5 +1,5 @@
 #pane{
-    -fx-background-image: url("regenschirme.jpg");
+    -fx-background-image: url("wolken.jpg");
     -fx-background-repeat: stretch;
     -fx-background-size: 900 506;
     -fx-background-position: center center;
@@ -35,4 +35,21 @@
     -fx-font-size: 70;
     -fx-font-weight: bold;
     -fx-text-color: black;
+}
+
+
+
+.hyperlink:hover {
+    -fx-font-weight: bolder;
+    -fx-underline: false;
+}
+
+.hyperlink:visited {
+    -fx-underline: false;
+}
+
+.hyperlink {
+    -fx-text-color: black;
+    -fx-font-size: 15;
+    -fx-text-fill: black;
 }
