@@ -34,6 +34,7 @@ import java.util.Optional;
 
 
 public class WindrichtungTableScene implements GUIScene {
+    private VBox layout;
     private Scene scene;
     private Daten daten;
     private TableView<Windrichtung> table;
@@ -48,12 +49,33 @@ public class WindrichtungTableScene implements GUIScene {
     public WindrichtungTableScene(Daten daten,GUI gui) {
         this.gui = gui;
         this.daten = daten;
-        VBox layout = new VBox(10);
+        layout = new VBox(10);
         layout.setPadding(new Insets(10, 10, 10, 10));
-        this.scene = new Scene(layout, 800, 500);
+        this.scene = new Scene(layout,1540,800);
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
-        layout.getChildren().addAll(windrichtungTable(), footerLink());
 
+        Hyperlink linkMonitor = new Hyperlink("Zurück zur Übersicht");
+        linkMonitor.setBorder(Border.EMPTY);
+        linkMonitor.setPadding(new Insets(4, 0, 4, 4));
+        linkMonitor.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                gui.getStage().setScene(gui.getOverviewPage().getScene());
+            }
+        });
+
+        Hyperlink linkZurueck = new Hyperlink("Zurück");
+        linkZurueck.setBorder(Border.EMPTY);
+        linkZurueck.setPadding(new Insets(4, 0, 4, 4));
+        linkZurueck.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                gui.getStage().setScene(gui.getWindRichtungScene().getScene());
+            }
+        });
+
+
+        layout.getChildren().addAll(windrichtungTable(),linkZurueck,linkMonitor);
     }
 
     private Node windrichtungTable() {
@@ -83,20 +105,6 @@ public class WindrichtungTableScene implements GUIScene {
         windrichtungen.add(g);
     }
 
-
-
-    private Node footerLink() {
-        Hyperlink linkMonitor = new Hyperlink("Zur Übersicht");
-        linkMonitor.setBorder(Border.EMPTY);
-        linkMonitor.setPadding(new Insets(4, 0, 4, 4));
-        linkMonitor.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                gui.getStage().setScene(gui.getOverviewPage().getScene());
-            }
-        });
-        return linkMonitor;
-    }
 
 
     @Override

@@ -31,7 +31,7 @@ public class OverviewPage implements GUIScene {
         this.daten = daten;
         BorderPane layout = new BorderPane();
         layout.setPadding(new Insets(10, 20, 10, 20));
-        this.scene = new Scene(layout, 800, 500);
+        this.scene = new Scene(layout,1540,800);
         layout.setId("pane");
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
         layout.setTop(GUIUtils.createFancyHeadline("Übersicht"));
@@ -40,18 +40,19 @@ public class OverviewPage implements GUIScene {
         gui.getWindScene().updateText();
         gui.getWindRichtungScene().updateText();
 
-
     }
 
     private Node overviewAllData() {
+
         //Creating a Grid Pane
         GridPane gridPane = new GridPane();
+        gridPane.setId("overViewPane");
 
         //Setting size for the pane
         gridPane.setMinSize(400, 200);
 
         //Setting the padding
-        gridPane.setPadding(new Insets(10, 10, 10, 10));
+      //  gridPane.setPadding(new Insets(10, 10, 10, 10));
 
         //Setting the vertical and horizontal gaps between the columns
         gridPane.setVgap(5);
@@ -62,12 +63,12 @@ public class OverviewPage implements GUIScene {
 
         //Arranging all the nodes in the grid
         gridPane.add(new Text("Wind:"), 0, 0);
-        gridPane.add(new Text(daten.getWindGeschwindigkeiten().get(daten.getWindGeschwindigkeiten().size() - 1).getGeschwindigkeit() + " km / h"), 1, 0);
+        gridPane.add(new Text(daten.getWindGeschwindigkeiten().get(daten.getWindGeschwindigkeiten().size() - 1).getGeschwindigkeit() + " km / h"), 2, 0);
         gridPane.add(new Text("Windrichtung:"), 0, 1);
-        gridPane.add(new Text(daten.getWindrichtungen().get(daten.getWindrichtungen().size() - 1).getReadableWindrichtung()), 1, 1);
-        gridPane.add(new Text(""), 1, 1);
+        gridPane.add(new Text(daten.getWindrichtungen().get(daten.getWindrichtungen().size() - 1).getReadableWindrichtung()), 2, 1);
+        //gridPane.add(new Text(""), 1, 1);
         gridPane.add(new Text("Niederschlag:"), 0, 2);
-        gridPane.add(new Text(""), 1, 2);
+        gridPane.add(new Text("60 mm / m²"), 2, 2);
 
         return gridPane;
     }
@@ -77,7 +78,7 @@ public class OverviewPage implements GUIScene {
 
         Hyperlink windLink = new Hyperlink("Wind");
         windLink.setBorder(Border.EMPTY);
-        windLink.setPadding(new Insets(0, 0, 4, 15));
+        windLink.setPadding(new Insets(0, 0, 50, 15));
         windLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -87,7 +88,7 @@ public class OverviewPage implements GUIScene {
 
         Hyperlink windDirectionLink = new Hyperlink("Wind-Richtung");
         windDirectionLink.setBorder(Border.EMPTY);
-        windDirectionLink.setPadding(new Insets(0, 0, 4, 15));
+        windDirectionLink.setPadding(new Insets(0, 0, 50, 15));
         windDirectionLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -97,7 +98,7 @@ public class OverviewPage implements GUIScene {
 
         Hyperlink rainfallLink = new Hyperlink("Niederschlag");
         rainfallLink.setBorder(Border.EMPTY);
-        rainfallLink.setPadding(new Insets(0, 0, 4, 15));
+        rainfallLink.setPadding(new Insets(0, 0, 50, 15));
         /*overviewLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -106,6 +107,7 @@ public class OverviewPage implements GUIScene {
         });*/
 
         bottomBar.getChildren().addAll(windLink, windDirectionLink, rainfallLink);
+        bottomBar.setAlignment(Pos.BOTTOM_CENTER);
         return bottomBar;
     }
 

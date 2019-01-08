@@ -31,7 +31,7 @@ public class NewTriggerScene implements GUIScene {
         this.gui = gui;
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10, 10, 10, 10));
-        this.scene = new Scene(layout, 800, 500);
+        this.scene = new Scene(layout,1540,800);
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
         layout.getChildren().addAll(GUIUtils.createFancyHeadline("Neuen Trigger anlegen"), infoText(), addTriggerForm());
 

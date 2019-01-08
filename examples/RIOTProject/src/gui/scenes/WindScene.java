@@ -7,13 +7,13 @@ import gui.dialogs.TriggerDialog;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
 import java.util.Date;
@@ -41,19 +41,19 @@ public class WindScene implements GUIScene {
         this.daten = daten;
         BorderPane layout = new BorderPane();
         layout.setPadding(new Insets(10, 20, 10, 20));
-        this.scene = new Scene(layout, 800, 500);
+        this.scene = new Scene(layout,1540,800);
         layout.setId("pane");
         this.scene.getStylesheets().addAll(this.getClass().getResource("/stage.css").toExternalForm());
         layout.setTop(initHeadline());
-        layout.setCenter(initMessung());
+        layout.setCenter(getWindTexte());
         layout.setBottom(initMinMaxValue());
     }
 
     private Node initMinMaxValue() {
 
-        Hyperlink chartLink = new Hyperlink("Zum Chart");
+        Hyperlink chartLink = new Hyperlink("Historische Windgeschwindigkeiten");
         chartLink.setBorder(Border.EMPTY);
-        chartLink.setPadding(new Insets(0, 0, 4, 0));
+        chartLink.setPadding(new Insets(0, 5, 50, 5));
         chartLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -63,9 +63,8 @@ public class WindScene implements GUIScene {
 
 
         Hyperlink triggerLink = new Hyperlink("Trigger verwalten");
-        triggerLink.setId("linkLeiste");
         triggerLink.setBorder(Border.EMPTY);
-        triggerLink.setPadding(new Insets(0, 0, 4, 0));
+        triggerLink.setPadding(new Insets(0, 5, 50, 5));
         triggerLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -75,7 +74,8 @@ public class WindScene implements GUIScene {
 
         HBox valueLayout = new HBox();
         valueLayout.setSpacing(10);
-        valueLayout.getChildren().addAll(minText, maxText, chartLink, triggerLink, GUIUtils.overviewLink(gui));
+        valueLayout.setAlignment(Pos.BOTTOM_CENTER);
+        valueLayout.getChildren().addAll(chartLink, triggerLink, GUIUtils.overviewLink(gui));
         return valueLayout;
     }
 
@@ -87,8 +87,39 @@ public class WindScene implements GUIScene {
     }
 
     private Text initMessung() {
-        messungText.setId("windMessungText");
+
         return messungText;
+    }
+
+    private Node getWindTexte() {
+        GridPane gridPane = new GridPane();
+        gridPane.setId("overViewPane");
+        //gridPane.setVgap(5);
+        //gridPane.setHgap(5);
+        gridPane.setAlignment(Pos.CENTER);
+        //gridPane.setGridLinesVisible(true);
+
+        messungText.setId("windMessungText");
+
+        gridPane.add(messungText, 0, 0,2,1);
+        gridPane.add(new Text(""),0,2);
+        gridPane.add(minText, 0, 3);
+
+        gridPane.add(maxText, 1, 3);
+        GridPane.setHalignment(minText, HPos.RIGHT);
+        //GridPane.setHalignment(maxText, HPos.CENTER);
+        GridPane.setHalignment(messungText, HPos.CENTER);
+
+        ColumnConstraints col1 = new ColumnConstraints();
+        RowConstraints row1 = new RowConstraints();
+        col1.setPercentWidth(50);
+        ColumnConstraints col2 = new ColumnConstraints();
+        col2.setPercentWidth(50);
+
+        gridPane.getColumnConstraints().addAll(col1,col2);
+
+
+        return gridPane;
     }
 
     @Override
@@ -101,13 +132,13 @@ public class WindScene implements GUIScene {
         int wert = daten.getWindGeschwindigkeiten().get(daten.getWindGeschwindigkeiten().size() - 1).getGeschwindigkeit();
         if (maxValue == null || maxValue.getGeschwindigkeit() < wert) {
             maxValue = new Windgeschwindigkeit(wert, new Date());
-            maxText.setText("Max: " + wert + " km/h");
+            maxText.setText("     Max: " + wert + " km/h");
         }
         if (minValue == null || minValue.getGeschwindigkeit() > wert) {
             minValue = new Windgeschwindigkeit(wert, new Date());
-            minText.setText("Min: " + wert + " km/h");
+            minText.setText("Min: " + wert + " km/h     ");
         }
-        messungText.setText(wert + " km/h");
+        messungText.setText("Aktuelle Windgeschwindigkeit: "+wert + " km/h");
 
         gui.getTriggerData().forEach((t) -> {
             Trigger trigger = (Trigger) t;

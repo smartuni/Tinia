@@ -1,7 +1,8 @@
 #pane{
     -fx-background-image: url("wolken.jpg");
-    -fx-background-repeat: stretch;
-    -fx-background-size: 900 506;
+   /* -fx-background-repeat: stretch; */
+    -fx-background-size: stretch;
+    /*-fx-background-size: 900 506;*/
     -fx-background-position: center center;
 }
 
@@ -32,7 +33,7 @@
 
 #windMessungText {
     -fx-font-family: Verdana;
-    -fx-font-size: 70;
+    -fx-font-size: 20;
     -fx-font-weight: bold;
     -fx-text-color: black;
 }
@@ -52,4 +53,9 @@
     -fx-text-color: black;
     -fx-font-size: 15;
     -fx-text-fill: black;
+}
+
+#overViewPane {
+    -fx-font-size: 15;
+    -fx-padding: 20 20 20 20;
 }

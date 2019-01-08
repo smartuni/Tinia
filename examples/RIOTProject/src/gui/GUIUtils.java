@@ -28,7 +28,7 @@ public class GUIUtils {
     public static Node overviewLink(GUI gui) {
         Hyperlink overviewPage = new Hyperlink("Übersichtsseite");
         overviewPage.setBorder(Border.EMPTY);
-        overviewPage.setPadding(new Insets(0, 0, 4, 0));
+        overviewPage.setPadding(new Insets(0, 5, 50, 5));
         overviewPage.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
