@@ -33,8 +33,8 @@ int measure_wind_direction(int wind_adc) {
 }
 
 
-int measure_wind_speed(int wind_counter) {
-  return windspeed;
+int measure_wind_speed(int timediff) {
+  return 2.4 / 1000 * timediff;
 }
 
 

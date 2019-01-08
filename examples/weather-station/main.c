@@ -18,8 +18,11 @@ static kernel_pid_t winddir_pid;
 static char data_handler_stack[THREAD_STACKSIZE_DEFAULT];
 static char wind_dir_stack[THREAD_STACKSIZE_DEFAULT];
 
-int last_timestamp;
+
 int windspeed_max;
+int last_rainfall_timestamp;
+int last_windspeed_timestamp;
+
 /**
  *  Sends a message to the data handler if the window between the current 
  *  and last call is longer than a specified timeout.
@@ -30,14 +33,14 @@ static void rain_callback(void *arg) {
     msg_t msg;
 
     int current_timestamp = xtimer_now_usec();
-    int timediff = current_timestamp - last_timestamp;
+    int timediff = current_timestamp - last_rainfall_timestamp;
     // only if current call is out of the time window
     if (timediff > TIMEOUT) {
         msg.type = RAINFALL_TYPE;
         msg_send(&msg, datahandler_pid);
     }
 
-    last_timestamp = current_timestamp;
+    last_rainfall_timestamp = current_timestamp;
 
 }
 
@@ -48,7 +51,11 @@ static void windspeed_callback(void *arg) {
     (void) arg;
 
     msg_t msg;
+    
     msg.type = WINDSPEED_TYPE;
+    int current_timestamp = xtimer_now_usec();
+    int timediff = current_timestamp - last_windspeed_timestamp;
+    msg.content.value = timediff;
     msg_send(&msg, winddir_pid);
     msg_send(&msg, datahandler_pid);
 }
@@ -74,9 +81,9 @@ static void *data_handler(void *arg) {
         {            
             windspeed = measure_wind_speed(++wind_counter);
             if (windspeed > windspeed_max)
-                {
-                    windspeed_max == windspeed;
-                }
+            {
+                windspeed_max = windspeed;
+            }
             printf("SPD: %i\n", windspeed);
         }
         if (msg.type == RAINFALL_TYPE)
@@ -150,12 +157,12 @@ int main(void) {
                         winddir_handler,
                         NULL, "wind direction thead");
 
-    last_timestamp = xtimer_now_usec();
-
     // rainfall sensor
+
+    last_rainfall_timestamp = xtimer_now_usec();
     puts("rainfall");
-    printf("%i\n", last_timestamp);
-    if (gpio_init_int(GPIO_PIN(1, RAINFALL_PIN), GPIO_IN_PD, GPIO_RISING, rain_callback, (void *) &last_timestamp) < 0) {
+    printf("%i\n", last_rainfall_timestamp);
+    if (gpio_init_int(GPIO_PIN(1, RAINFALL_PIN), GPIO_IN_PD, GPIO_RISING, rain_callback, (void *) &last_rainfall_timestamp) < 0) {
         printf("error: init_int of GPIO_PIN(%i, %i) failed\n", GPIO_PORT, RAINFALL_PIN);
         return 1;
     }
@@ -164,8 +171,10 @@ int main(void) {
     
 
     // wind speed sensor
+
+    last_windspeed_timestamp = xtimer_now_usec();
     puts("windspeed");
-    if (gpio_init_int(GPIO_PIN(GPIO_PORT, WINDSPEED_PIN), GPIO_IN_PD, GPIO_FALLING, windspeed_callback, (void *) &last_timestamp) < 0) {
+    if (gpio_init_int(GPIO_PIN(GPIO_PORT, WINDSPEED_PIN), GPIO_IN_PD, GPIO_FALLING, windspeed_callback, (void *) &last_windspeed_timestamp) < 0) {
         printf("error: init_int of GPIO_PIN(%i, %i) failed\n", GPIO_PORT, WINDSPEED_PIN);
         return 1;
     }
@@ -209,9 +218,9 @@ int main(void) {
     cayenne_lpp_add_analog_output(&lpp, 4, rainfall);
     _print_buffer(lpp.buffer, lpp.cursor, "Result");
 
-    puts("==============================\n");
-    puts("====== Welcome to TINIA ======\n");
-    puts("==============================\n");
+    puts("==============================");
+    puts("====== Welcome to TINIA ======");
+    puts("==============================");
 
     // shell
     char line_buf[SHELL_DEFAULT_BUFSIZE];

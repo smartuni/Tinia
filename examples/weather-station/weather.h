@@ -26,5 +26,5 @@ typedef enum WIND_DIRECTION {
 #define RESOLUTION ADC_RES_6BIT
 
 int measure_wind_direction(int adc_value);
-int measure_wind_speed(int wind_adc);
+int measure_wind_speed(int timediff);
 int measure_rainfall(int counter);
