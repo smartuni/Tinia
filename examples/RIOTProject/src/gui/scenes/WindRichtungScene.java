@@ -56,7 +56,7 @@ public class WindRichtungScene implements GUIScene {
             }
         });
 
-        Hyperlink linkZurueck = new Hyperlink("Zurück");
+        Hyperlink linkZurueck = new Hyperlink("Zurück zur Übersicht");
         linkZurueck.setBorder(Border.EMPTY);
         linkZurueck.setPadding(new Insets(0, 5, 50, 5));
         linkZurueck.setOnAction(new EventHandler<ActionEvent>() {

@@ -38,7 +38,7 @@ public class LoadingPage implements GUIScene {
 
     private Node initLinks() {
 
-        Hyperlink overviewPage = new Hyperlink("Übersichtsseite");
+        Hyperlink overviewPage = new Hyperlink("Zur Übersicht");
         overviewPage.setBorder(Border.EMPTY);
         overviewPage.setPadding(new Insets(0, 5, 50, 25));
         overviewPage.setOnAction(new EventHandler<ActionEvent>() {
