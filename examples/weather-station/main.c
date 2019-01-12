@@ -32,7 +32,7 @@ semtech_loramac_t loramac;
 
 /* Messages are sent every 20s to respect the duty cycle on each channel */
 #define PERIOD              (20U)
-
+#define MA_SAMPLES          5
 #define SENDER_PRIO         (THREAD_PRIORITY_MAIN - 1)
 
 
@@ -52,19 +52,12 @@ int winddir;
  */
 static void rain_callback(void *arg) {
     (void) arg;
-    
+
     msg_t msg;
-
-    int current_timestamp = xtimer_now_usec();
-    int timediff = current_timestamp - last_rainfall_timestamp;
-    // only if current call is out of the time window
-    if (timediff > TIMEOUT) {
-        msg.type = RAINFALL_TYPE;
-        msg_send(&msg, datahandler_pid);
-    }
-
-    last_rainfall_timestamp = current_timestamp;
-
+    puts("RAINFALL TRIGGER");
+    msg.type = RAINFALL_TYPE;
+    msg.content.value = xtimer_now_usec();
+    msg_send(&msg, datahandler_pid);
 }
 
 /**
@@ -74,11 +67,9 @@ static void windspeed_callback(void *arg) {
     (void) arg;
 
     msg_t msg;
-    
+    puts("WINDSPEED TRIGGER");
     msg.type = WINDSPEED_TYPE;
-    int current_timestamp = xtimer_now_usec();
-    int timediff = current_timestamp - last_windspeed_timestamp;
-    msg.content.value = timediff;
+    msg.content.value = xtimer_now_usec();
     msg_send(&msg, winddir_pid);
     msg_send(&msg, datahandler_pid);
 }
@@ -90,8 +81,12 @@ static void *data_handler(void *arg) {
     (void) arg;
 
     int rain_counter = 0;
-    int wind_counter = 0;
 
+    int last_rainfall_timestamp = xtimer_now_usec();
+    int last_windspeed_timestamp = xtimer_now_usec();
+
+    int windspeed_values[MA_SAMPLES];
+    int current_windspeed;
 
     msg_t msg;
     
@@ -99,17 +94,38 @@ static void *data_handler(void *arg) {
         msg_receive(&msg);
         if (msg.type == WINDSPEED_TYPE)
         {            
-            windspeed = measure_wind_speed(++wind_counter);
+            int timediff = msg.content.value - last_windspeed_timestamp;
+
+            current_windspeed = measure_wind_speed(timediff);
+            
+            for (int i = MA_SAMPLES; i > 0; --i)
+            {
+                windspeed_values[i] = windspeed_values[i-1];
+            }
+            windspeed_values[0] = current_windspeed;
+
+            int sum = 0;
+            for (int i = 0; i < MA_SAMPLES; ++i)
+            {
+                sum += windspeed_values[i];
+                printf("PAST %i: %i\n", i, windspeed_values[i]);
+            }
+            windspeed = sum/MA_SAMPLES;
+
             if (windspeed > windspeed_max)
             {
                 windspeed_max = windspeed;
             }
             printf("SPD: %i\n", windspeed);
+            last_windspeed_timestamp = msg.content.value;
         }
         if (msg.type == RAINFALL_TYPE)
         {
-            rainfall = measure_rainfall(++rain_counter);
-            printf("RNF: %i\n", rainfall);
+            if (msg.content.value - last_rainfall_timestamp > TIMEOUT) {
+                rainfall = measure_rainfall(++rain_counter);
+                printf("RNF: %i\n", rainfall);
+            }
+            last_rainfall_timestamp = msg.content.value;
         }
         if (msg.type == WINDDIR_TYPE)
         {
@@ -144,6 +160,7 @@ static void *winddir_handler(void *arg) {
         msg_receive(&msg);
         // TODO: if wind speed is > least wind speed needed
             adc_value = adc_sample(ADC_LINE(WINDDIR_PIN), RESOLUTION);
+            printf("WINDDIR SENSOR: %d\n", adc_value);
             msg.type = WINDDIR_TYPE;
             msg.content.value = adc_value;
             msg_send(&msg, datahandler_pid);
@@ -154,15 +171,6 @@ static void *winddir_handler(void *arg) {
 
 
 /* +++++++ LoraWan functions +++++++ */
-
-
-static void _print_buffer(const uint8_t *buffer, size_t len, const char *msg)
-{
-    printf("%s: ", msg);
-    for (uint8_t i = 0; i < len; i++) {
-        printf("%02X", buffer[i]);
-    }
-}
 
 
 static void rtc_cb(void *arg)
@@ -208,6 +216,11 @@ static void *sender(void *arg)
     while (1) {
         msg_receive(&msg);
 
+        cayenne_lpp_add_analog_output(&lpp, 1, windspeed);
+        cayenne_lpp_add_analog_output(&lpp, 2, windspeed_max);
+        cayenne_lpp_add_analog_output(&lpp, 3, winddir);
+        cayenne_lpp_add_analog_output(&lpp, 4, rainfall);
+
         /* Trigger the message send */
         _send_message();
 
@@ -224,12 +237,6 @@ static void *sender(void *arg)
 
 /***********MAIN*************/
 int main(void) {
-
-    cayenne_lpp_add_analog_output(&lpp, 1, windspeed);
-    cayenne_lpp_add_analog_output(&lpp, 2, windspeed_max);
-    cayenne_lpp_add_analog_output(&lpp, 3, winddir);
-    cayenne_lpp_add_analog_output(&lpp, 4, rainfall);
-    _print_buffer(lpp.buffer, lpp.cursor, "Result");
     
     // data handler thread
     puts("Starting TINIA main application thread ...");
@@ -258,7 +265,7 @@ int main(void) {
     last_rainfall_timestamp = xtimer_now_usec();
     puts("rainfall");
     printf("%i\n", last_rainfall_timestamp);
-    if (gpio_init_int(GPIO_PIN(1, RAINFALL_PIN), GPIO_IN_PD, GPIO_RISING, rain_callback, (void *) &last_rainfall_timestamp) < 0) {
+    if (gpio_init_int(GPIO_PIN(GPIO_PORT, RAINFALL_PIN), GPIO_IN_PD, GPIO_RISING, rain_callback, (void *) &last_rainfall_timestamp) < 0) {
         printf("error: init_int of GPIO_PIN(%i, %i) failed\n", GPIO_PORT, RAINFALL_PIN);
         return 1;
     }
@@ -270,11 +277,11 @@ int main(void) {
 
     last_windspeed_timestamp = xtimer_now_usec();
     puts("windspeed");
-    if (gpio_init_int(GPIO_PIN(GPIO_PORT, WINDSPEED_PIN), GPIO_IN_PD, GPIO_FALLING, windspeed_callback, (void *) &last_windspeed_timestamp) < 0) {
-        printf("error: init_int of GPIO_PIN(%i, %i) failed\n", GPIO_PORT, WINDSPEED_PIN);
+    if (gpio_init_int(GPIO_PIN(1, WINDSPEED_PIN), GPIO_IN_PD, GPIO_FALLING, windspeed_callback, (void *) &last_windspeed_timestamp) < 0) {
+        printf("error: init_int of GPIO_PIN(%i, %i) failed\n", 1, WINDSPEED_PIN);
         return 1;
     }
-    printf("GPIO_PIN(%i, %i) successfully initialized as ext int\n", GPIO_PORT, WINDSPEED_PIN);
+    printf("GPIO_PIN(%i, %i) successfully initialized as ext int\n", 1, WINDSPEED_PIN);
 
     puts("Initialized weather sensors.");
 
@@ -303,24 +310,17 @@ int main(void) {
     puts("Starting join procedure");
     if (semtech_loramac_join(&loramac, LORAMAC_JOIN_OTAA) != SEMTECH_LORAMAC_JOIN_SUCCEEDED) {
         puts("Join procedure failed");
-        return 1;
+    } else {
+
+        puts("Join procedure succeeded"); 
+
+        /* start the sender thread */
+        sender_pid = thread_create(sender_stack, sizeof(sender_stack),
+                                   SENDER_PRIO, 0, sender, NULL, "sender");
     }
-    puts("Join procedure succeeded"); 
-
-
-    cayenne_lpp_add_analog_output(&lpp, 1, windspeed);
-    cayenne_lpp_add_analog_output(&lpp, 2, windspeed_max);
-    cayenne_lpp_add_analog_output(&lpp, 3, winddir);
-    cayenne_lpp_add_analog_output(&lpp, 4, rainfall);
-    _print_buffer(lpp.buffer, lpp.cursor, "Result");
-
     puts("==============================\n");
     puts("====== Welcome to TINIA ======\n");
     puts("==============================\n");
-
-    /* start the sender thread */
-    sender_pid = thread_create(sender_stack, sizeof(sender_stack),
-                               SENDER_PRIO, 0, sender, NULL, "sender");
 
     /* trigger the first send */
     msg_t msg;
